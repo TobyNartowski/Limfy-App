@@ -10,4 +10,8 @@
     <string name="image_back">Powróć</string>
     <string name="register_text_main">Zarejestruj się</string>
     <string name="register_text_sub">Załóż nowe konto i zacznij korzystać z aplikacji!</string>
+
+    <string name="connect_text_small">Kliknij na ikonę wyżej, aby połączyć się ze swoim urządzeniem</string>
+    <string name="connect_text_sub">znajdź swoje urządzenie poprzez Bluetooth!</string>
+    <string name="connect_text_main">Połącz się</string>
 </resources>

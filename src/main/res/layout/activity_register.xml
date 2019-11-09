@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/register_arrow_back"
-        android:layout_width="45dp"
-        android:layout_height="50dp"
+        android:layout_width="316dp"
+        android:layout_height="45dp"
         android:layout_marginTop="36dp"
         android:layout_marginBottom="8dp"
         android:contentDescription="@string/image_back"
@@ -54,7 +54,7 @@
             android:textSize="32sp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/connect_text_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
@@ -91,7 +91,7 @@
             android:padding="10dp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/register_button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
