@@ -1,10 +1,11 @@
 package pl.tobynartowski.limfy;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Build;
-import android.os.Bundle;
-import android.view.WindowManager;
+import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -12,15 +13,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ViewUtils.makeFullscreen(getWindow());
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            getWindow().getAttributes().layoutInDisplayCutoutMode
-                    = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
-        }
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        findViewById(R.id.login_button_register).setOnClickListener((view) -> {
+            startActivity(new Intent(this, RegisterActivity.class));
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+        });
     }
 }

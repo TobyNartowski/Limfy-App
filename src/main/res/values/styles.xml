@@ -6,8 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
 
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:textViewStyle">@style/OpenSansStyleTextView</item>
+        <item name="android:buttonStyle">@style/OpenSansStyleButton</item>
+    </style>
+
+    <style name="OpenSansStyleTextView" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="OpenSansStyleButton" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/open_sans</item>
     </style>
 </resources>

@@ -2,8 +2,12 @@
     <string name="app_name">Limfy</string>
     <string name="limfy_logo">Limfy logo</string>
 
-    <string name="login_field_login">Login</string>
+    <string name="login_field_login">Nazwa użytkownika</string>
     <string name="login_field_password">Hasło</string>
     <string name="login_button_login">Zaloguj się</string>
     <string name="login_button_register">Załóż konto</string>
+
+    <string name="image_back">Powróć</string>
+    <string name="register_text_main">Zarejestruj się</string>
+    <string name="register_text_sub">Załóż nowe konto i zacznij korzystać z aplikacji!</string>
 </resources>
