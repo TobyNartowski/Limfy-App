@@ -11,10 +11,10 @@
         android:layout_width="310dp"
         android:layout_height="478dp"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="78dp"
         android:layout_marginEnd="48dp"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,10 +39,10 @@
 
         <ImageView
             android:id="@+id/connect_image"
-            android:contentDescription="Połącz z urządzeniem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:contentDescription="@string/connect_image"
             android:src="@drawable/dummy_connect_off" />
 
         <ProgressBar

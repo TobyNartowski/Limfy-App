@@ -23,6 +23,7 @@ public class ConnectActivity extends AppCompatActivity {
             View progressBar = findViewById(R.id.connect_progress);
             progressBar.setVisibility(View.VISIBLE);
 
+            // TODO: Turn on bluetooth and connect to the device here
             new Handler().postDelayed(() -> {
                 ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
                 progressBar.setVisibility(View.INVISIBLE);

@@ -14,4 +14,13 @@
     <string name="connect_text_small">Kliknij na ikonę wyżej, aby połączyć się ze swoim urządzeniem</string>
     <string name="connect_text_sub">znajdź swoje urządzenie poprzez Bluetooth!</string>
     <string name="connect_text_main">Połącz się</string>
+    <string name="connect_image">Połącz z urządzeniem</string>
+
+    <string name="app_actual_text_arrow">Przejdź niżej</string>
+    <string name="app_actual_text_calories_sub">spalonych</string>
+    <string name="app_actual_text_steps">zrobionych kroków</string>
+    <string name="app_actual_text_distance">twoja droga</string>
+    <string name="app_actual_text_heartrate">tętno</string>
+    <string name="app_actual_text_sub">Dane pobierane bezpośrednio z urządzenia, pamiętaj, że nie są one poddane analizie, więc mogą się różnić od faktycznych!</string>
+    <string name="app_actual_text_main">Teraz</string>
 </resources>
