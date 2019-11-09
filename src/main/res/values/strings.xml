@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Limfy</string>
+    <string name="limfy_logo">Limfy logo</string>
+
+    <string name="login_field_login">Login</string>
+    <string name="login_field_password">Hasło</string>
+    <string name="login_button_login">Zaloguj się</string>
+    <string name="login_button_register">Załóż konto</string>
 </resources>
