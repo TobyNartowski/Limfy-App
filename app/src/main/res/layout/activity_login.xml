@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.LoginActivity">
+
+    <ImageView
+        android:id="@+id/login_image"
+        android:layout_width="0dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="135dp"
+        android:contentDescription="@string/limfy_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_1024" />
+
+    <LinearLayout
+        android:id="@+id/login_group"
+        android:layout_width="307dp"
+        android:layout_height="201dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="32dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_image">
+
+        <EditText
+            android:id="@+id/login_field_login"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:background="@drawable/edit_round"
+            android:digits="0123456789*qwertzuiopasdfghjklyxcvbnm,_,-"
+            android:drawableStart="@drawable/drawable_person"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/login_field_login"
+            android:imeOptions="actionNext"
+            android:inputType="textPersonName"
+            android:maxLength="64"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/login_field_password"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/edit_round"
+            android:digits="0123456789*qwertzuiopasdfghjklyxcvbnm,_,-"
+            android:drawableStart="@drawable/drawable_lock"
+            android:drawablePadding="8dp"
+            android:ems="10"
+            android:fontFamily="@font/open_sans"
+            android:hint="@string/login_field_password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:maxLength="64"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_marginTop="40dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/login_button_register"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_round"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="@string/login_button_register"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack" />
+
+            <Button
+                android:id="@+id/login_button_login"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/button_round"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="@string/login_button_login"
+                android:textAllCaps="false"
+                android:textColor="#fff" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
