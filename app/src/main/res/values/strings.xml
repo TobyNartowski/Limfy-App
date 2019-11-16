@@ -5,6 +5,8 @@
     <string name="error_connection">Wystąpił błąd z połączeniem</string>
     <string name="error_conflict">Nazwa użytkownika jest już zajęta</string>
     <string name="error_validation">Niepoprawne pole</string>
+    <string name="error_internal">Wystąpił błąd wewnętrzny</string>
+    <string name="error_credentials_invalid">Login lub hasło niepoprawne</string>
 
     <string name="login_field_login">Nazwa użytkownika</string>
     <string name="login_field_password">Hasło</string>

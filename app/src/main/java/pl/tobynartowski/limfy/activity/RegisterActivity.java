@@ -52,7 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
                                 break;
                             default:
                                 ViewUtils.showToast(RegisterActivity.this,
-                                        "Wystąpił błąd wewnętrzny");
+                                        getResources().getString(R.string.error_internal)
+                                                + ": " + response.code());
                                 view.setEnabled(true);
                                 break;
                         }
