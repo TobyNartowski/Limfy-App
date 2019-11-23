@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
             String passedPassword = ((TextView) findViewById(R.id.register_field_password)).getText().toString();
 
             if (passedLogin.isEmpty() || passedPassword.isEmpty()) {
-                ViewUtils.showToast(this, "Uzupełnij wszystkie pola!");
+                ViewUtils.showToast(this, getResources().getString(R.string.error_fill));
             } else {
                 User user = new User(passedLogin, UserUtils.hashPassword(passedPassword));
 

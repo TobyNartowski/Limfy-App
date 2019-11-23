@@ -12,7 +12,7 @@ import java.util.TimerTask;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
-public class AppActual extends AppCompatActivity {
+public class AppActualActivity extends AppCompatActivity {
 
     private boolean heartShow = true;
 

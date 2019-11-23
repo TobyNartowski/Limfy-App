@@ -1,18 +1,17 @@
 package pl.tobynartowski.limfy.activity;
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Base64;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MotionEventCompat;
+import androidx.core.content.ContextCompat;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
@@ -25,14 +24,29 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private boolean permission = true;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (int result : grantResults) {
+            if (result == PackageManager.PERMISSION_DENIED) {
+                ViewUtils.showToast(this, getResources().getString(R.string.error_agreement));
+                permission = false;
+                break;
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ViewUtils.makeFullscreen(getWindow());
 
-        if (getIntent().getStringExtra("new") != null) {
-            ViewUtils.showToast(this, "Konto założone, możesz się teraz zalogować");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
         findViewById(R.id.login_button_register).setOnClickListener((view) -> {
@@ -45,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
             String passedPassword = ((TextView) findViewById(R.id.login_field_password)).getText().toString();
 
             if (passedLogin.isEmpty() || passedPassword.isEmpty()) {
-                ViewUtils.showToast(this, "Uzupełnij wszystkie pola!");
+                ViewUtils.showToast(this, getResources().getString(R.string.error_fill));
             } else {
                 Call<TokenResponse> tokenCall = RetrofitClient.getInstance().getApi().getToken(
                         RetrofitClient.getInstance().getAuthorizationCredentials(),
@@ -53,22 +67,26 @@ public class LoginActivity extends AppCompatActivity {
                 tokenCall.enqueue(new Callback<TokenResponse>() {
                     @Override
                     public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-                        switch (response.code()) {
-                            case 400:
-                                ViewUtils.showToast(LoginActivity.this,
-                                        getResources().getString(R.string.error_credentials_invalid));
-                                break;
-                            case 200:
-                                if (response.body() != null) {
-                                    RetrofitClient.getInstance().addToken(response.body().getAccessToken());
-                                    switchToConnectActivity();
+                        if (!permission) {
+                            ViewUtils.showToast(LoginActivity.this, getResources().getString(R.string.error_agreement));
+                        } else {
+                            switch (response.code()) {
+                                case 400:
+                                    ViewUtils.showToast(LoginActivity.this,
+                                            getResources().getString(R.string.error_credentials_invalid));
                                     break;
-                                }
-                            default:
-                                System.err.println(response.raw().toString());
-                                ViewUtils.showToast(LoginActivity.this,
-                                        getResources().getString(R.string.error_internal) + ": " + response.code());
-                                break;
+                                case 200:
+                                    if (response.body() != null) {
+                                        RetrofitClient.getInstance().addToken(response.body().getAccessToken());
+                                        switchToConnectActivity();
+                                        break;
+                                    }
+                                default:
+                                    System.err.println(response.raw().toString());
+                                    ViewUtils.showToast(LoginActivity.this,
+                                            getResources().getString(R.string.error_internal) + ": " + response.code());
+                                    break;
+                            }
                         }
                     }
 

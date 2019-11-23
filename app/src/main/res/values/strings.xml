@@ -2,11 +2,17 @@
     <string name="app_name">Limfy</string>
     <string name="limfy_logo">Limfy logo</string>
 
+    <string name="info_registered">Konto założone, możesz się teraz zalogować</string>
+
     <string name="error_connection">Wystąpił błąd z połączeniem</string>
     <string name="error_conflict">Nazwa użytkownika jest już zajęta</string>
     <string name="error_validation">Niepoprawne pole</string>
     <string name="error_internal">Wystąpił błąd wewnętrzny</string>
     <string name="error_credentials_invalid">Login lub hasło niepoprawne</string>
+    <string name="error_fill">Uzupełnij wszystkie pola!</string>
+    <string name="error_not_supported">Twoje urządzenie nie wspiera Bluetooth Low Energy</string>
+    <string name="error_agreement">Zgoda na korzystanie z lokalizacji jest wymagana</string>
+    <string name="error_device_not_found">Nie znaleziono urządzenia, spróbuj ponownie</string>
 
     <string name="login_field_login">Nazwa użytkownika</string>
     <string name="login_field_password">Hasło</string>
