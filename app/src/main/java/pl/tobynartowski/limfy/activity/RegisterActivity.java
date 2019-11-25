@@ -23,9 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         ViewUtils.makeFullscreen(getWindow());
 
-        findViewById(R.id.register_arrow_back).setOnClickListener((view) -> {
-            switchToLoginActivity(null);
-        });
+        findViewById(R.id.register_arrow_back).setOnClickListener((view) -> switchToLoginActivity(null));
 
         findViewById((R.id.register_button_register)).setOnClickListener((view) -> {
             String passedLogin = ((TextView) findViewById(R.id.register_field_login)).getText().toString();
