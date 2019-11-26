@@ -1,5 +1,7 @@
 package pl.tobynartowski.limfy.activity;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +16,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import pl.tobynartowski.limfy.R;
-import pl.tobynartowski.limfy.model.DeviceData;
+import pl.tobynartowski.limfy.model.BluetoothData;
+import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppActualActivity extends AppCompatActivity implements Observer {
@@ -24,11 +27,12 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
 
     private void loadData(int heartbeat, int steps) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00##");
-        ((TextView) findViewById(R.id.app_actual_text_heartbeat)).setText(getResources().getString(R.string.app_actual_value_heartbeat, heartbeat));
-        ((TextView) findViewById(R.id.app_actual_text_steps)).setText(String.format(Locale.getDefault(), "%d", steps));
-        ((TextView) findViewById(R.id.app_actual_text_distance)).setText(getResources().getString(R.string.app_actual_value_distance, decimalFormat.format(0.792 * steps)));
-        ((TextView) findViewById(R.id.app_actual_text_calories)).setText(getResources().getString(R.string.app_actual_value_calories, decimalFormat.format(steps / 20.0)));
-
+        runOnUiThread(() -> {
+            ((TextView) findViewById(R.id.app_actual_text_heartbeat)).setText(getResources().getString(R.string.app_actual_value_heartbeat, heartbeat));
+            ((TextView) findViewById(R.id.app_actual_text_steps)).setText(String.format(Locale.getDefault(), "%d", steps));
+            ((TextView) findViewById(R.id.app_actual_text_distance)).setText(getResources().getString(R.string.app_actual_value_distance, decimalFormat.format(0.792 * steps)));
+            ((TextView) findViewById(R.id.app_actual_text_calories)).setText(getResources().getString(R.string.app_actual_value_calories, decimalFormat.format(steps / 20.0)));
+        });
     }
 
     @Override
@@ -36,24 +40,22 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_actual);
         ViewUtils.makeFullscreen(getWindow());
-        DeviceData.getInstance().addObserver(this);
+        BluetoothData.getInstance().addObserver(this);
         loadData(0, 0);
 
         Timer heartTimer = new Timer();
         heartTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                synchronized (this) {
-                    runOnUiThread(() -> {
-                        View image = findViewById(R.id.app_actual_icon_heart);
-                        if (heartShow) {
-                            image.setVisibility(View.VISIBLE);
-                        } else {
-                            image.setVisibility(View.INVISIBLE);
-                        }
-                        heartShow = !heartShow;
-                    });
-                }
+                runOnUiThread(() -> {
+                    View image = findViewById(R.id.app_actual_icon_heart);
+                    if (heartShow) {
+                        image.setVisibility(View.VISIBLE);
+                    } else {
+                        image.setVisibility(View.INVISIBLE);
+                    }
+                    heartShow = !heartShow;
+                });
             }
         }, 0, 600);
     }
@@ -61,10 +63,33 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof DeviceData) {
-            DeviceData deviceData = (DeviceData) o;
-            totalSteps += deviceData.getSteps();
-            loadData(deviceData.getHeartbeat(), totalSteps);
+        if (o instanceof BluetoothData) {
+            BluetoothData bluetoothData = (BluetoothData) o;
+
+            if (bluetoothData.isDisconnected()) {
+                BluetoothData.resetInstance();
+                runOnUiThread(() -> {
+                    Intent connectionBrokenIntent = new Intent(AppActualActivity.this, ConnectActivity.class);
+                    connectionBrokenIntent.putExtra("error", "connection");
+                    startActivity(connectionBrokenIntent,
+                            ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());
+                });
+            }
+
+            if (bluetoothData.isNewSteps()) {
+                totalSteps += bluetoothData.getSteps();
+                bluetoothData.setNewSteps(false);
+            }
+            loadData(bluetoothData.getHeartbeat(), totalSteps);
         }
+    }
+
+    @Override
+    public void onBackPressed () {
+        BluetoothUtils.getBluetoothGatt().disconnect();
+        BluetoothUtils.getBluetoothGatt().close();
+        startActivity(new Intent(AppActualActivity.this, ConnectActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());
+
     }
 }

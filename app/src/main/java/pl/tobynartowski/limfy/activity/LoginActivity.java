@@ -49,6 +49,10 @@ public class LoginActivity extends AppCompatActivity {
             requestPermissions(new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
+        if (getIntent().getStringExtra("new") != null) {
+            ViewUtils.showToast(this, getResources().getString(R.string.info_registered));
+        }
+
         findViewById(R.id.login_button_register).setOnClickListener((view) -> {
             startActivity(new Intent(this, RegisterActivity.class));
             overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);

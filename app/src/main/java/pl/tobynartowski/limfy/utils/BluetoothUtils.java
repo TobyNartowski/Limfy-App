@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.UUID;
 
-import pl.tobynartowski.limfy.model.DeviceData;
+import pl.tobynartowski.limfy.model.BluetoothData;
 
 public class BluetoothUtils {
 
@@ -25,10 +25,15 @@ public class BluetoothUtils {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                System.err.println("connected");
                 bluetoothGatt.discoverServices();
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                System.err.println("diconnected");
+                synchronized (this) {
+                    if (!BluetoothData.getInstance().isDisconnected()) {
+                        BluetoothData.getInstance().setDisconnected(true);
+                        bluetoothGatt.disconnect();
+                        bluetoothGatt.close();
+                    }
+                }
             }
         }
 
@@ -46,18 +51,17 @@ public class BluetoothUtils {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             if (characteristic.getUuid().equals(CHARACTERISTIC_HEARTBEAT_UUID)) {
-                DeviceData.getInstance().setHeartbeat(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+                BluetoothData.getInstance().setHeartbeat(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
             } else if (characteristic.getUuid().equals(CHARACTERISTIC_STEPS_UUID)) {
-                DeviceData.getInstance().setSteps(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+                BluetoothData.getInstance().setSteps(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
             } else if (characteristic.getUuid().equals(CHARACTERISTIC_SHAKINESS_UUID)) {
-                DeviceData.getInstance().setShakiness(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+                BluetoothData.getInstance().setShakiness(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
             }
         }
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                System.err.println(characteristic.getUuid());
                 characteristics.remove();
 
                 if (characteristics.size() > 0) {
@@ -69,6 +73,10 @@ public class BluetoothUtils {
 
     public static void setBluetoothGatt(BluetoothGatt bluetoothGatt) {
         BluetoothUtils.bluetoothGatt = bluetoothGatt;
+    }
+
+    public static BluetoothGatt getBluetoothGatt() {
+        return BluetoothUtils.bluetoothGatt;
     }
 
     public static BluetoothGattCallback getGattCallback() {

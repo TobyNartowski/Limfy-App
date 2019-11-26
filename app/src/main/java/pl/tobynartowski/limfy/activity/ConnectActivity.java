@@ -23,12 +23,17 @@ public class ConnectActivity extends AppCompatActivity {
 
     private BluetoothAdapter bluetoothAdapter;
     private boolean connected = false;
+    private boolean openBluetoothWindow = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
         ViewUtils.makeFullscreen(getWindow());
+
+        if (getIntent().getStringExtra("error") != null) {
+            ViewUtils.showToast(this, getResources().getString(R.string.error_device_disconnected));
+        }
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             ViewUtils.showToast(this, getResources().getString(R.string.error_not_supported));
@@ -50,7 +55,8 @@ public class ConnectActivity extends AppCompatActivity {
                     @Override
                     public void onScanResult(int callbackType, ScanResult result) {
                         super.onScanResult(callbackType, result);
-                        if ("LimfyDevice".equals(result.getDevice().getName())) {
+                        if ("LimfyDevice".equals(result.getDevice().getName()) && !connected) {
+                            System.err.println("--------------------------------> CONNECTING...");
                             ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
                             progressBar.setVisibility(View.INVISIBLE);
 
@@ -59,8 +65,10 @@ public class ConnectActivity extends AppCompatActivity {
                             bluetoothAdapter.getBluetoothLeScanner().stopScan(this);
                             connected = true;
 
-                            new Handler().postDelayed(() -> startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
-                                    ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle()), 1000);
+                            new Handler().postDelayed(() -> {
+                                startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
+                                        ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle());
+                            }, 1000);
                         }
                     }
                 };
@@ -82,18 +90,30 @@ public class ConnectActivity extends AppCompatActivity {
     }
 
     private void initBluetooth() {
-        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        if (bluetoothManager != null) {
-            bluetoothAdapter = bluetoothManager.getAdapter();
+        if (openBluetoothWindow) {
+            openBluetoothWindow = false;
+            final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+            if (bluetoothManager != null) {
+                bluetoothAdapter = bluetoothManager.getAdapter();
 
-            int requestEnableBT = 0;
-            if (bluetoothNotInitialized()) {
-                Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(bluetoothIntent, requestEnableBT);
+                int requestEnableBT = 0;
+                if (bluetoothNotInitialized()) {
+                    Intent bluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(bluetoothIntent, requestEnableBT);
+                }
+            } else {
+                ViewUtils.showToast(this, getResources().getString(R.string.error_internal));
+                finish();
             }
-        } else {
-            ViewUtils.showToast(this, getResources().getString(R.string.error_internal));
-            finish();
+            openBluetoothWindow = true;
         }
+    }
+
+
+    @Override
+    public void onBackPressed () {
+        startActivity(new Intent(ConnectActivity.this, LoginActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle());
+
     }
 }

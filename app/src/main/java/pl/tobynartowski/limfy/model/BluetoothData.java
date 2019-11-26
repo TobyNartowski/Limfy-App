@@ -2,22 +2,31 @@ package pl.tobynartowski.limfy.model;
 
 import java.util.Observable;
 
-public class DeviceData extends Observable {
+public class BluetoothData extends Observable {
 
     private int heartbeat;
     private int shakiness;
     private int steps;
+    private boolean newSteps;
+    private boolean disconnected;
 
-    private static DeviceData instance;
+    private static BluetoothData instance;
 
-    public static DeviceData getInstance() {
+    public static BluetoothData getInstance() {
         if (instance == null) {
-            instance = new DeviceData();
+            instance = new BluetoothData();
         }
         return instance;
     }
 
-    private DeviceData() {}
+    public static void resetInstance() {
+        instance = null;
+    }
+
+    private BluetoothData() {
+        newSteps = false;
+        disconnected = false;
+    }
 
     public int getHeartbeat() {
         return heartbeat;
@@ -43,6 +52,24 @@ public class DeviceData extends Observable {
 
     public void setSteps(int steps) {
         this.steps = steps;
+        setNewSteps(true);
+        notifyObservers();
+    }
+
+    public boolean isNewSteps() {
+        return newSteps;
+    }
+
+    public void setNewSteps(boolean newSteps) {
+        this.newSteps = newSteps;
+    }
+
+    public boolean isDisconnected() {
+        return disconnected;
+    }
+
+    public void setDisconnected(boolean disconnected) {
+        this.disconnected = disconnected;
         notifyObservers();
     }
 
