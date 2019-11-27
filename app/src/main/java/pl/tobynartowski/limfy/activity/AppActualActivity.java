@@ -16,14 +16,15 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import pl.tobynartowski.limfy.R;
+import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppActualActivity extends AppCompatActivity implements Observer {
 
     private boolean heartShow = false;
-    private int totalSteps;
 
     private void loadData(int heartbeat, int steps) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00##");
@@ -41,7 +42,15 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
         setContentView(R.layout.activity_app_actual);
         ViewUtils.makeFullscreen(getWindow());
         BluetoothData.getInstance().addObserver(this);
-        loadData(0, 0);
+        loadData(BluetoothData.getInstance().getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
+
+        findViewById(R.id.app_actual_layout).setOnTouchListener(new SwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                startActivity(new Intent(AppActualActivity.this, AppHeartActivity.class));
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+            }
+        });
 
         Timer heartTimer = new Timer();
         heartTimer.scheduleAtFixedRate(new TimerTask() {
@@ -67,7 +76,7 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
             BluetoothData bluetoothData = (BluetoothData) o;
 
             if (bluetoothData.isDisconnected()) {
-                BluetoothData.resetInstance();
+                BluetoothUtils.disconnect();
                 runOnUiThread(() -> {
                     Intent connectionBrokenIntent = new Intent(AppActualActivity.this, ConnectActivity.class);
                     connectionBrokenIntent.putExtra("error", "connection");
@@ -76,20 +85,15 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
                 });
             }
 
-            if (bluetoothData.isNewSteps()) {
-                totalSteps += bluetoothData.getSteps();
-                bluetoothData.setNewSteps(false);
-            }
-            loadData(bluetoothData.getHeartbeat(), totalSteps);
+            loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
         }
     }
 
     @Override
     public void onBackPressed () {
-        BluetoothUtils.getBluetoothGatt().disconnect();
-        BluetoothUtils.getBluetoothGatt().close();
+        BluetoothUtils.disconnect();
+        stopService(new Intent(AppActualActivity.this, RestUpdater.class));
         startActivity(new Intent(AppActualActivity.this, ConnectActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());
-
     }
 }

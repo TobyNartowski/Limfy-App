@@ -24,14 +24,19 @@ public class UserUtils {
         return instance;
     }
 
-    public void setSession(String username) {
+    public void setSession(String id, String bearer) {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("username", username);
+        editor.putString("id", id);
+        editor.putString("bearer", bearer);
         editor.apply();
     }
 
-    public String getUsername() {
-        return preferences.getString("username", null);
+    public String getId() {
+        return preferences.getString("id", null);
+    }
+
+    public String getBearer() {
+        return preferences.getString("bearer", null);
     }
 
     public void destroySession() {

@@ -21,17 +21,20 @@ public class BluetoothUtils {
     private static Queue<BluetoothGattCharacteristic> characteristics = new LinkedList<>();
     private static BluetoothGatt bluetoothGatt;
 
+    private static boolean connected = false;
+
     private static final BluetoothGattCallback gattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 bluetoothGatt.discoverServices();
+                BluetoothData.getInstance().setDisconnected(false);
+                connected = true;
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 synchronized (this) {
                     if (!BluetoothData.getInstance().isDisconnected()) {
                         BluetoothData.getInstance().setDisconnected(true);
-                        bluetoothGatt.disconnect();
-                        bluetoothGatt.close();
+                        disconnect();
                     }
                 }
             }
@@ -81,5 +84,15 @@ public class BluetoothUtils {
 
     public static BluetoothGattCallback getGattCallback() {
         return gattCallback;
+    }
+
+    public static void disconnect() {
+        bluetoothGatt.disconnect();
+        bluetoothGatt.close();
+        connected = false;
+    }
+
+    public static boolean isConnected() {
+        return connected;
     }
 }

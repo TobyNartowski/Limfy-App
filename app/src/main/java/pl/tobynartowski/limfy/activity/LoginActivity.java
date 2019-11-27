@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
+import com.google.gson.JsonObject;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
@@ -47,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ViewUtils.makeFullscreen(getWindow());
 
-        if (UserUtils.getInstance(this).getUsername() != null) {
+        if (UserUtils.getInstance(this).getId() != null) {
             new Handler().postDelayed(this::switchToConnectActivity, 500);
             autoLogin = true;
         } else {
@@ -98,8 +101,38 @@ public class LoginActivity extends AppCompatActivity {
                                     break;
                                 case 200:
                                     if (response.body() != null) {
+                                        String bearer = response.body().getAccessToken();
                                         RetrofitClient.getInstance().addToken(response.body().getAccessToken());
-                                        UserUtils.getInstance(LoginActivity.this).setSession(passedLogin);
+
+                                        Call<JsonObject> userIdCall = RetrofitClient.getInstance().getApi().getUserId(passedLogin);
+                                        userIdCall.enqueue(new Callback<JsonObject>() {
+                                            @Override
+                                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                                switch (response.code()) {
+                                                    case 200:
+                                                        JsonObject jsonObject = response.body();
+                                                        if (jsonObject == null) {
+                                                            throw new IllegalStateException("Server endpoint error");
+                                                        }
+                                                        UserUtils.getInstance(LoginActivity.this)
+                                                                .setSession(jsonObject.get("id").getAsString(), bearer);
+                                                        break;
+                                                    case 404:
+                                                    default:
+                                                        ViewUtils.showToast(LoginActivity.this,
+                                                                getResources().getString(R.string.error_internal) + ": " + response.code());
+                                                        break;
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                                ViewUtils.showToast(LoginActivity.this,
+                                                        getResources().getString(R.string.error_connection) + ": " + t.getMessage());
+                                                view.setEnabled(true);
+                                            }
+                                        });
+
                                         switchToConnectActivity();
                                         break;
                                     }
@@ -143,4 +176,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(this, RegisterActivity.class));
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
+
+    @Override
+    public void onBackPressed() {}
 }

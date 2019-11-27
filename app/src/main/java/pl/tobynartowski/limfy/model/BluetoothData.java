@@ -4,11 +4,14 @@ import java.util.Observable;
 
 public class BluetoothData extends Observable {
 
+    public enum ChangeType {HEARTBEAT, STEPS, SHAKINESS, DISCONNECT, NONE};
+
     private int heartbeat;
     private int shakiness;
     private int steps;
-    private boolean newSteps;
     private boolean disconnected;
+    private int totalSteps = 0;
+    private ChangeType change = ChangeType.NONE;
 
     private static BluetoothData instance;
 
@@ -19,12 +22,7 @@ public class BluetoothData extends Observable {
         return instance;
     }
 
-    public static void resetInstance() {
-        instance = null;
-    }
-
     private BluetoothData() {
-        newSteps = false;
         disconnected = false;
     }
 
@@ -34,6 +32,7 @@ public class BluetoothData extends Observable {
 
     public void setHeartbeat(int heartbeat) {
         this.heartbeat = heartbeat;
+        change = ChangeType.HEARTBEAT;
         notifyObservers();
     }
 
@@ -43,6 +42,7 @@ public class BluetoothData extends Observable {
 
     public void setShakiness(int shakiness) {
         this.shakiness = shakiness;
+        change = ChangeType.SHAKINESS;
         notifyObservers();
     }
 
@@ -52,16 +52,9 @@ public class BluetoothData extends Observable {
 
     public void setSteps(int steps) {
         this.steps = steps;
-        setNewSteps(true);
+        change = ChangeType.STEPS;
+        totalSteps += steps;
         notifyObservers();
-    }
-
-    public boolean isNewSteps() {
-        return newSteps;
-    }
-
-    public void setNewSteps(boolean newSteps) {
-        this.newSteps = newSteps;
     }
 
     public boolean isDisconnected() {
@@ -70,7 +63,16 @@ public class BluetoothData extends Observable {
 
     public void setDisconnected(boolean disconnected) {
         this.disconnected = disconnected;
+        change = ChangeType.DISCONNECT;
         notifyObservers();
+    }
+
+    public int getTotalSteps() {
+        return totalSteps;
+    }
+
+    public ChangeType getChange() {
+        return change;
     }
 
     @Override
