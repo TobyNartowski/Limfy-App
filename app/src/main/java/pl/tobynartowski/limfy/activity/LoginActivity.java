@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
 import pl.tobynartowski.limfy.model.TokenResponse;
+import pl.tobynartowski.limfy.utils.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
@@ -25,6 +27,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private boolean permission = true;
+    private boolean autoLogin = false;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -44,6 +47,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ViewUtils.makeFullscreen(getWindow());
 
+        if (UserUtils.getInstance(this).getUsername() != null) {
+            new Handler().postDelayed(this::switchToConnectActivity, 500);
+            autoLogin = true;
+        } else {
+            autoLogin = false;
+            findViewById(R.id.login_group).setVisibility(View.VISIBLE);
+        }
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -53,9 +64,15 @@ public class LoginActivity extends AppCompatActivity {
             ViewUtils.showToast(this, getResources().getString(R.string.info_registered));
         }
 
+        findViewById(R.id.login_layout).setOnTouchListener(new SwipeTouchListener(this) {
+            @Override
+            public void onSwipeTop() {
+                switchToRegisterActivity();
+            }
+        });
+
         findViewById(R.id.login_button_register).setOnClickListener((view) -> {
-            startActivity(new Intent(this, RegisterActivity.class));
-            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+            switchToRegisterActivity();
         });
 
         findViewById(R.id.login_button_login).setOnClickListener((view) -> {
@@ -82,11 +99,11 @@ public class LoginActivity extends AppCompatActivity {
                                 case 200:
                                     if (response.body() != null) {
                                         RetrofitClient.getInstance().addToken(response.body().getAccessToken());
+                                        UserUtils.getInstance(LoginActivity.this).setSession(passedLogin);
                                         switchToConnectActivity();
                                         break;
                                     }
                                 default:
-                                    System.err.println(response.raw().toString());
                                     ViewUtils.showToast(LoginActivity.this,
                                             getResources().getString(R.string.error_internal) + ": " + response.code());
                                     break;
@@ -106,10 +123,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void switchToConnectActivity() {
-        TranslateAnimation groupAnimation = new TranslateAnimation(0, 0, 0, 2500);
-        groupAnimation.setFillAfter(false);
-        groupAnimation.setDuration(1500);
-        findViewById(R.id.login_group).startAnimation(groupAnimation);
+        if (!autoLogin) {
+            TranslateAnimation groupAnimation = new TranslateAnimation(0, 0, 0, 2500);
+            groupAnimation.setFillAfter(false);
+            groupAnimation.setDuration(1500);
+            findViewById(R.id.login_group).startAnimation(groupAnimation);
+        }
 
         TranslateAnimation imageAnimation = new TranslateAnimation(0, 0, 0, -2500);
         imageAnimation.setFillAfter(false);
@@ -118,5 +137,10 @@ public class LoginActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> startActivity(new Intent(this, ConnectActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(this).toBundle()), 1000);
+    }
+
+    public void switchToRegisterActivity() {
+        startActivity(new Intent(this, RegisterActivity.class));
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 }

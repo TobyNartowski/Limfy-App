@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
 import pl.tobynartowski.limfy.model.User;
+import pl.tobynartowski.limfy.utils.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
@@ -24,6 +25,12 @@ public class RegisterActivity extends AppCompatActivity {
         ViewUtils.makeFullscreen(getWindow());
 
         findViewById(R.id.register_arrow_back).setOnClickListener((view) -> switchToLoginActivity(null));
+        findViewById(R.id.register_layout).setOnTouchListener(new SwipeTouchListener(this) {
+            @Override
+            public void onSwipeBottom() {
+                switchToLoginActivity(null);
+            }
+        });
 
         findViewById((R.id.register_button_register)).setOnClickListener((view) -> {
             String passedLogin = ((TextView) findViewById(R.id.register_field_login)).getText().toString();

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class ConnectActivity extends AppCompatActivity {
@@ -112,8 +113,8 @@ public class ConnectActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed () {
+        UserUtils.getInstance(ConnectActivity.this).destroySession();
         startActivity(new Intent(ConnectActivity.this, LoginActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle());
-
     }
 }

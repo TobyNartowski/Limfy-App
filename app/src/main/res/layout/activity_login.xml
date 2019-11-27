@@ -20,6 +20,7 @@
 
     <LinearLayout
         android:id="@+id/login_group"
+        android:visibility="invisible"
         android:layout_width="307dp"
         android:layout_height="201dp"
         android:layout_marginStart="32dp"
