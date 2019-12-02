@@ -19,6 +19,7 @@ import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
@@ -75,6 +76,7 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
         if (o instanceof BluetoothData) {
             BluetoothData bluetoothData = (BluetoothData) o;
 
+            /* DEVELOPMENT
             if (bluetoothData.isDisconnected()) {
                 BluetoothUtils.disconnect();
                 runOnUiThread(() -> {
@@ -84,14 +86,18 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
                             ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());
                 });
             }
-
+            */
             loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
         }
     }
 
     @Override
     public void onBackPressed () {
-        BluetoothUtils.disconnect();
+        // DEVELOPMENT
+//        BluetoothUtils.disconnect();
+        DummyDataUtils.getInstance().stopTimers();
+        BluetoothUtils.setConnected(false);
+
         stopService(new Intent(AppActualActivity.this, RestUpdater.class));
         startActivity(new Intent(AppActualActivity.this, ConnectActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());

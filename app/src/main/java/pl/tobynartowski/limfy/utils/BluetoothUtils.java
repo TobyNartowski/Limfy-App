@@ -95,4 +95,9 @@ public class BluetoothUtils {
     public static boolean isConnected() {
         return connected;
     }
+
+    // DEVELOPMENT
+    public static void setConnected(boolean status) {
+        connected = status;
+    }
 }

@@ -1,7 +1,6 @@
 package pl.tobynartowski.limfy.api;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.nio.charset.StandardCharsets;
 

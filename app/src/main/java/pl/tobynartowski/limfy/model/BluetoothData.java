@@ -11,11 +11,11 @@ public class BluetoothData extends Observable {
     private int steps;
     private boolean disconnected;
     private int totalSteps = 0;
-    private ChangeType change = ChangeType.NONE;
+    private ChangeType changeType = ChangeType.NONE;
 
     private static BluetoothData instance;
 
-    public static BluetoothData getInstance() {
+    public synchronized static BluetoothData getInstance() {
         if (instance == null) {
             instance = new BluetoothData();
         }
@@ -26,53 +26,53 @@ public class BluetoothData extends Observable {
         disconnected = false;
     }
 
-    public int getHeartbeat() {
+    public synchronized int getHeartbeat() {
         return heartbeat;
     }
 
-    public void setHeartbeat(int heartbeat) {
+    public synchronized void setHeartbeat(int heartbeat) {
         this.heartbeat = heartbeat;
-        change = ChangeType.HEARTBEAT;
+        changeType = ChangeType.HEARTBEAT;
         notifyObservers();
     }
 
-    public int getShakiness() {
+    public synchronized int getShakiness() {
         return shakiness;
     }
 
-    public void setShakiness(int shakiness) {
+    public synchronized void setShakiness(int shakiness) {
         this.shakiness = shakiness;
-        change = ChangeType.SHAKINESS;
+        changeType = ChangeType.SHAKINESS;
         notifyObservers();
     }
 
-    public int getSteps() {
+    public synchronized int getSteps() {
         return steps;
     }
 
-    public void setSteps(int steps) {
+    public synchronized void setSteps(int steps) {
         this.steps = steps;
-        change = ChangeType.STEPS;
         totalSteps += steps;
+        changeType = ChangeType.STEPS;
         notifyObservers();
     }
 
-    public boolean isDisconnected() {
+    public synchronized boolean isDisconnected() {
         return disconnected;
     }
 
-    public void setDisconnected(boolean disconnected) {
+    public synchronized void setDisconnected(boolean disconnected) {
         this.disconnected = disconnected;
-        change = ChangeType.DISCONNECT;
+        changeType = ChangeType.DISCONNECT;
         notifyObservers();
     }
 
-    public int getTotalSteps() {
+    public synchronized int getTotalSteps() {
         return totalSteps;
     }
 
-    public ChangeType getChange() {
-        return change;
+    public synchronized ChangeType getChange() {
+        return changeType;
     }
 
     @Override

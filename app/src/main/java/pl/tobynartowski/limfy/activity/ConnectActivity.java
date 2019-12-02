@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
@@ -58,44 +59,60 @@ public class ConnectActivity extends AppCompatActivity {
         findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
         ((ImageView) findViewById(R.id.connect_image)).setImageResource(R.drawable.dummy_connect_off);
         findViewById(R.id.connect_image).setOnClickListener((view) -> {
+
+        // DEVELOPMENT
             if (bluetoothNotInitialized()) {
                 initBluetooth();
             } else {
-                View progressBar = findViewById(R.id.connect_progress);
-                progressBar.setVisibility(View.VISIBLE);
+                DummyDataUtils.getInstance().initTimers();
+                ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
+                findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
 
-                ScanCallback scanCallback = new ScanCallback() {
-                    @Override
-                    public void onScanResult(int callbackType, ScanResult result) {
-                        super.onScanResult(callbackType, result);
-                        if ("LimfyDevice".equals(result.getDevice().getName()) && !BluetoothUtils.isConnected()) {
-                            if (loadingHandler != null) {
-                                loadingHandler.removeCallbacksAndMessages(null);
-                            }
-                            bluetoothAdapter.getBluetoothLeScanner().stopScan(this);
-
-                            ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
-                            progressBar.setVisibility(View.INVISIBLE);
-
-                            BluetoothUtils.setBluetoothGatt(result.getDevice()
-                                    .connectGatt(ConnectActivity.this, false, BluetoothUtils.getGattCallback()));
-
-                            startService(new Intent(ConnectActivity.this, RestUpdater.class));
-                            new Handler().postDelayed(() -> startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
-                                    ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle()), 1000);
-                        }
-                    }
-                };
-
-                bluetoothAdapter.getBluetoothLeScanner().startScan(scanCallback);
-                loadingHandler.postDelayed(() -> {
-                    bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
-                    if (!BluetoothUtils.isConnected()) {
-                        ViewUtils.showToast(this, getResources().getString(R.string.error_device_not_found));
-                        progressBar.setVisibility(View.INVISIBLE);
-                    }
-                }, 10000);
+                BluetoothUtils.setConnected(true);
+                startService(new Intent(ConnectActivity.this, RestUpdater.class));
+                new Handler().postDelayed(() -> startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
+                        ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle()), 1000);
             }
+        /*
+        if (bluetoothNotInitialized()) {
+            initBluetooth();
+        } else {
+            View progressBar = findViewById(R.id.connect_progress);
+            progressBar.setVisibility(View.VISIBLE);
+
+            ScanCallback scanCallback = new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    if ("LimfyDevice".equals(result.getDevice().getName()) && !BluetoothUtils.isConnected()) {
+                        if (loadingHandler != null) {
+                            loadingHandler.removeCallbacksAndMessages(null);
+                        }
+                        bluetoothAdapter.getBluetoothLeScanner().stopScan(this);
+
+                        ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
+                        progressBar.setVisibility(View.INVISIBLE);
+
+                        BluetoothUtils.setBluetoothGatt(result.getDevice()
+                                .connectGatt(ConnectActivity.this, false, BluetoothUtils.getGattCallback()));
+
+                        startService(new Intent(ConnectActivity.this, RestUpdater.class));
+                        new Handler().postDelayed(() -> startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
+                                ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle()), 1000);
+                    }
+                }
+            };
+
+            bluetoothAdapter.getBluetoothLeScanner().startScan(scanCallback);
+            loadingHandler.postDelayed(() -> {
+                bluetoothAdapter.getBluetoothLeScanner().stopScan(scanCallback);
+                if (!BluetoothUtils.isConnected()) {
+                    ViewUtils.showToast(this, getResources().getString(R.string.error_device_not_found));
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            }, 10000);
+        }
+         */
         });
     }
 

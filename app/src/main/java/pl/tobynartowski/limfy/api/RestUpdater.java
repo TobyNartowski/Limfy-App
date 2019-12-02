@@ -49,7 +49,7 @@ public class RestUpdater extends Service implements Observer {
     }
 
     @Override
-    public synchronized void update(Observable o, Object arg) {
+    public void update(Observable o, Object arg) {
         if (o instanceof BluetoothData) {
             BluetoothData dataObject = (BluetoothData) o;
             if (!dataObject.isDisconnected()) {
@@ -90,12 +90,8 @@ public class RestUpdater extends Service implements Observer {
     }
 
     @Override
-    public void onCreate() {
-
-    }
-
-    @Override
     public void onDestroy() {
+        BluetoothData.getInstance().deleteObserver(this);
     }
 
     @Nullable
