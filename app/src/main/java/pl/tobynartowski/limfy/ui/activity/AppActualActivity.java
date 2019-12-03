@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.activity;
+package pl.tobynartowski.limfy.ui.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.DummyDataUtils;
-import pl.tobynartowski.limfy.utils.SwipeTouchListener;
+import pl.tobynartowski.limfy.misc.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppActualActivity extends AppCompatActivity implements Observer {

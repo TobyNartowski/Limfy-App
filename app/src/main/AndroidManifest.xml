@@ -25,27 +25,33 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.AppViewActivity"></activity>
+        <activity android:name=".ui.activity.AppViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".api.RestUpdater" />
 
         <activity
-            android:name=".activity.AppHistoryActivity"
+            android:name=".ui.activity.AppHistoryActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AppHeartActivity"
+            android:name=".ui.activity.AppHeartActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.AppActualActivity"
+            android:name=".ui.activity.AppActualActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.ConnectActivity"
+            android:name=".ui.activity.ConnectActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

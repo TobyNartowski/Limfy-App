@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.activity;
+package pl.tobynartowski.limfy.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import pl.tobynartowski.limfy.R;
-import pl.tobynartowski.limfy.utils.SwipeTouchListener;
+import pl.tobynartowski.limfy.misc.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppHistoryActivity extends AppCompatActivity {

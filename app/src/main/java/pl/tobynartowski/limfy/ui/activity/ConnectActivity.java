@@ -1,11 +1,8 @@
-package pl.tobynartowski.limfy.activity;
+package pl.tobynartowski.limfy.ui.activity;
 
 import android.app.ActivityOptions;
-import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
-import android.bluetooth.le.ScanCallback;
-import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,7 +17,7 @@ import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.DummyDataUtils;
-import pl.tobynartowski.limfy.utils.SwipeTouchListener;
+import pl.tobynartowski.limfy.misc.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 

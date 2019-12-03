@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/app_details_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Nazwa"
+            android:textColor="@color/colorAccent"
+            android:textSize="42sp"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/app_details_overall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Ogólnie"
+            android:textAllCaps="true"
+            android:textColor="@color/colorBlack"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/app_details_value1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="Wartość 1"
+                android:textColor="@color/colorBlack"
+                android:textSize="36sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/app_details_value1_icon"
+                android:layout_width="51dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="6dp"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                app:srcCompat="@drawable/drawable_heart"
+                tools:ignore="InefficientWeight" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/app_details_value1_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Wartość 1 opis"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/app_details_value2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="Wartość 2"
+                android:textColor="@color/colorBlack"
+                android:textSize="36sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/app_details_value2_icon"
+                android:layout_width="51dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/drawable_angle_arrow_down"
+                tools:ignore="InefficientWeight"
+                android:contentDescription="@string/app_details_arrow_up" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/app_details_value2_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Wartość 2 opis"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/app_details_value3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/open_sans_bold"
+                android:text="Wartość 3"
+                android:textColor="@color/colorBlack"
+                android:textSize="36sp"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/app_details_value3_icon"
+                android:layout_width="51dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:scaleType="fitStart"
+                android:tint="@color/colorRed"
+                app:srcCompat="@drawable/drawable_angle_arrow_up"
+                tools:ignore="InefficientWeight"
+                android:contentDescription="@string/app_details_arrow_up" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/app_details_value3_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="Wartość 3 opis"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,4 +40,9 @@
     <string name="app_actual_value_heartbeat">%1$d bpm</string>
     <string name="app_actual_value_distance">%1$s m</string>
     <string name="app_actual_value_calories">%1$s cal</string>
+
+    <string name="app_details_arrow_down">Spadek</string>
+    <string name="app_details_arrow_up">Wzrost</string>
+    <string name="app_details_heartbeat_name">Praca serca</string>
+    <string name="app_details_activity_name">Aktywność</string>
 </resources>

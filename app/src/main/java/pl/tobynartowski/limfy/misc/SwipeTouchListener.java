@@ -1,4 +1,4 @@
-package pl.tobynartowski.limfy.utils;
+package pl.tobynartowski.limfy.misc;
 
 import android.content.Context;
 import android.view.GestureDetector;
