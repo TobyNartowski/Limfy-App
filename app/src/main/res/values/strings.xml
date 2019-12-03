@@ -45,4 +45,7 @@
     <string name="app_details_arrow_up">Wzrost</string>
     <string name="app_details_heartbeat_name">Praca serca</string>
     <string name="app_details_activity_name">Aktywność</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

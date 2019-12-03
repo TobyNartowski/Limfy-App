@@ -44,15 +44,6 @@ public class ConnectActivity extends AppCompatActivity {
 
         new Handler().postDelayed(this::initBluetooth, 500);
 
-        findViewById(R.id.connect_layout).setOnTouchListener(new SwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                loadingHandler.removeCallbacksAndMessages(null);
-                startActivity(new Intent(ConnectActivity.this, AppHeartActivity.class));
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-            }
-        });
-
         findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
         ((ImageView) findViewById(R.id.connect_image)).setImageResource(R.drawable.dummy_connect_off);
         findViewById(R.id.connect_image).setOnClickListener((view) -> {
@@ -67,8 +58,7 @@ public class ConnectActivity extends AppCompatActivity {
 
                 BluetoothUtils.setConnected(true);
                 startService(new Intent(ConnectActivity.this, RestUpdater.class));
-                new Handler().postDelayed(() -> startActivity(new Intent(ConnectActivity.this, AppActualActivity.class),
-                        ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle()), 1000);
+                new Handler().postDelayed(this::onBackPressed, 1000);
             }
         /*
         if (bluetoothNotInitialized()) {
@@ -137,12 +127,10 @@ public class ConnectActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
-    public void onBackPressed () {
+    public void onBackPressed() {
         loadingHandler.removeCallbacksAndMessages(null);
-        UserUtils.getInstance(ConnectActivity.this).destroySession();
-        startActivity(new Intent(ConnectActivity.this, LoginActivity.class),
-                ActivityOptions.makeSceneTransitionAnimation(ConnectActivity.this).toBundle());
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }
 }

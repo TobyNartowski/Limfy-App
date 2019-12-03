@@ -20,7 +20,6 @@ import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.DummyDataUtils;
-import pl.tobynartowski.limfy.misc.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppActualActivity extends AppCompatActivity implements Observer {
@@ -44,14 +43,6 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
         ViewUtils.makeFullscreen(getWindow());
         BluetoothData.getInstance().addObserver(this);
         loadData(BluetoothData.getInstance().getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
-
-        findViewById(R.id.app_actual_layout).setOnTouchListener(new SwipeTouchListener(this) {
-            @Override
-            public void onSwipeLeft() {
-                startActivity(new Intent(AppActualActivity.this, AppHeartActivity.class));
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-            }
-        });
 
         Timer heartTimer = new Timer();
         heartTimer.scheduleAtFixedRate(new TimerTask() {
