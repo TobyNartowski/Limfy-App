@@ -35,6 +35,20 @@ public class AppDetailsFragment extends Fragment {
         this.which = which;
     }
 
+    @Override
+    public void onPause() {
+        chart.setVisibility(View.INVISIBLE);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        chart.setVisibility(View.VISIBLE);
+        chart.animateY(1000, Easing.EaseOutCubic);
+        chart.invalidate();
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,27 +79,22 @@ public class AppDetailsFragment extends Fragment {
         }
 
         chart = view.findViewById(R.id.line_chart);
+        chart.setVisibility(View.INVISIBLE);
         chart.setNoDataText("");
-
-        new Handler().postDelayed(() -> {
-            chart.setViewPortOffsets(0, 0, 0, 0);
-            chart.getDescription().setEnabled(false);
-            chart.setTouchEnabled(true);
-            chart.setDragEnabled(true);
-            chart.setScaleEnabled(true);
-            chart.setPinchZoom(false);
-            chart.setDrawGridBackground(false);
-            chart.setMaxHighlightDistance(300);
-            chart.getXAxis().setEnabled(false);
-            chart.getAxisLeft().setEnabled(false);
-            chart.getAxisRight().setEnabled(false);
-            chart.getLegend().setEnabled(false);
-            chart.setTouchEnabled(false);
-            chart.animateY(1000, Easing.EaseOutCubic);
-            chart.invalidate();
-
-            addChartData();
-        }, 300);
+        chart.setViewPortOffsets(0, 0, 0, 0);
+        chart.getDescription().setEnabled(false);
+        chart.setTouchEnabled(true);
+        chart.setDragEnabled(true);
+        chart.setScaleEnabled(true);
+        chart.setPinchZoom(false);
+        chart.setDrawGridBackground(false);
+        chart.setMaxHighlightDistance(300);
+        chart.getXAxis().setEnabled(false);
+        chart.getAxisLeft().setEnabled(false);
+        chart.getAxisRight().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.setTouchEnabled(false);
+        addChartData();
 
         super.onViewCreated(view, savedInstanceState);
     }

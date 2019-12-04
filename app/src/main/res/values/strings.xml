@@ -29,6 +29,11 @@
     <string name="connect_text_main">Połącz się</string>
     <string name="connect_image">Połącz z urządzeniem</string>
 
+    <string name="app_heart_icon">Serce</string>
+    <string name="app_connect_icon">Połącz</string>
+    <string name="app_disconnect_icon">Rozłącz</string>
+    <string name="app_view_disconnected">Rozłączono urządzenie</string>
+
     <string name="app_actual_text_arrow">Przejdź niżej</string>
     <string name="app_actual_text_calories_sub">spalonych</string>
     <string name="app_actual_text_steps">zrobionych kroków</string>
@@ -46,6 +51,18 @@
     <string name="app_details_heartbeat_name">Praca serca</string>
     <string name="app_details_activity_name">Aktywność</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_today_name">Twój dzień</string>
+    <string name="app_today_heartbeat">Praca serca</string>
+    <string name="app_today_heartbeat_description">tętno</string>
+    <string name="app_today_activity">Aktywność</string>
+    <string name="app_today_steps_description">kroków</string>
+    <string name="app_today_distance_description">twoja droga</string>
+    <string name="app_today_calories_description">spalonych</string>
+
+    <string name="app_history_name">Historia</string>
+    <string name="app_history_measurements">Zapisane pomiary</string>
+    <string name="app_history_entry_heartbeat_description">bpm</string>
+    <string name="app_history_entry_heartbeat_activity">kroków</string>
+    <string name="app_history_no_data">Brak danych, twoje pomiary będą pojawiały się tutaj automatycznie.</string>
+    <string name="app_history_no_data_image">Brak danych</string>
 </resources>

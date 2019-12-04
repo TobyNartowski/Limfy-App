@@ -23,7 +23,7 @@ public class ViewUtils {
 
     public static void showToast(Context context, String message) {
         Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 36);
         toast.getView().getBackground().setColorFilter(new PorterDuffColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP));
         ((TextView) toast.getView().findViewById(android.R.id.message)).setTextColor(Color.WHITE);
         toast.show();

@@ -69,7 +69,7 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
 
             /* DEVELOPMENT
             if (bluetoothData.isDisconnected()) {
-                BluetoothUtils.disconnect();
+                BluetoothUtils.drawable_disconnect();
                 runOnUiThread(() -> {
                     Intent connectionBrokenIntent = new Intent(AppActualActivity.this, ConnectActivity.class);
                     connectionBrokenIntent.putExtra("error", "connection");
@@ -85,7 +85,7 @@ public class AppActualActivity extends AppCompatActivity implements Observer {
     @Override
     public void onBackPressed () {
         // DEVELOPMENT
-//        BluetoothUtils.disconnect();
+//        BluetoothUtils.drawable_disconnect();
         DummyDataUtils.getInstance().stopTimers();
         BluetoothUtils.setConnected(false);
 

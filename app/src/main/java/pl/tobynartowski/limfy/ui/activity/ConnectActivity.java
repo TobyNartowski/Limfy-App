@@ -1,6 +1,5 @@
 package pl.tobynartowski.limfy.ui.activity;
 
-import android.app.ActivityOptions;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -17,14 +16,13 @@ import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RestUpdater;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.DummyDataUtils;
-import pl.tobynartowski.limfy.misc.SwipeTouchListener;
-import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class ConnectActivity extends AppCompatActivity {
 
     private BluetoothAdapter bluetoothAdapter;
     private boolean openBluetoothWindow = true;
+    private boolean connected = false;
     private Handler loadingHandler = new Handler();
 
     @Override
@@ -45,18 +43,20 @@ public class ConnectActivity extends AppCompatActivity {
         new Handler().postDelayed(this::initBluetooth, 500);
 
         findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
-        ((ImageView) findViewById(R.id.connect_image)).setImageResource(R.drawable.dummy_connect_off);
-        findViewById(R.id.connect_image).setOnClickListener((view) -> {
-
-        // DEVELOPMENT
+        ImageView connectImage = findViewById(R.id.connect_image);
+        connectImage.setImageResource(R.drawable.dummy_connect_off);
+        connectImage.setOnClickListener((view) -> {
+            // DEVELOPMENT
             if (bluetoothNotInitialized()) {
                 initBluetooth();
             } else {
                 DummyDataUtils.getInstance().initTimers();
-                ((ImageView) view).setImageResource(R.drawable.dummy_connect_on);
+                connectImage.setImageResource(R.drawable.dummy_connect_on);
                 findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
 
                 BluetoothUtils.setConnected(true);
+                connected = true;
+
                 startService(new Intent(ConnectActivity.this, RestUpdater.class));
                 new Handler().postDelayed(this::onBackPressed, 1000);
             }
@@ -130,6 +130,11 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         loadingHandler.removeCallbacksAndMessages(null);
+        if (BluetoothUtils.isConnected() && !connected) {
+            // DEVELOPMENT
+            BluetoothUtils.setConnected(false);
+//            BluetoothUtils.disconnect();
+        }
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }

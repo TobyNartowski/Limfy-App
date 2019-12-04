@@ -24,23 +24,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.activity.AppViewActivity">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="n">
+
+        <activity android:name=".ui.activity.AppViewActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <service android:name=".api.RestUpdater" />
-
-        <activity
-            android:name=".ui.activity.AppHistoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.AppHeartActivity"
-            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AppActualActivity"
             android:screenOrientation="portrait" />
@@ -50,15 +44,7 @@
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.activity.LoginActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <service android:name=".api.RestUpdater" />
 
         <meta-data
             android:name="preloaded_fonts"

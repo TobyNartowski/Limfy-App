@@ -4,15 +4,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import pl.tobynartowski.limfy.Limfy;
+import java.util.Random;
+
 import pl.tobynartowski.limfy.R;
-import pl.tobynartowski.limfy.misc.SwipeTouchListener;
-import pl.tobynartowski.limfy.ui.activity.AppViewActivity;
 
 public class AppHistoryFragment extends Fragment {
 
@@ -24,16 +25,17 @@ public class AppHistoryFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        view.findViewById(R.id.app_history_layout).setOnTouchListener(new SwipeTouchListener(Limfy.getContext()) {
+//        Random random = new Random(47);
+//        for (int i = 0; i < 10; i++) {
+//            LinearLayout entry = (LinearLayout) View.inflate(getContext(), R.layout.layout_history_entry, null);
+//            ((TextView) entry.findViewById(R.id.app_history_entry_heartbeat)).setText(Integer.toString(random.nextInt(10) + 70));
+//            ((TextView) entry.findViewById(R.id.app_history_entry_activity)).setText(Integer.toString(random.nextInt(300) + 1000));
+//            ((TextView) entry.findViewById(R.id.app_history_entry_date)).setText((29 - i) + ".10.2018");
+//            ((LinearLayout) view.findViewById(R.id.app_history_entry_container)).addView(entry);
+//        }
 
-            @Override
-            public void onSwipeTop() {
-                AppViewActivity activity = (AppViewActivity) getActivity();
-                if (activity != null) {
-                    activity.changeToConnectActivity();
-                }
-            }
-        });
+        view.findViewById(R.id.app_history_no_data).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.app_history_measurements).setVisibility(View.GONE);
 
         super.onViewCreated(view, savedInstanceState);
     }
