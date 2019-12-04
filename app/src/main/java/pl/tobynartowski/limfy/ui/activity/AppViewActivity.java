@@ -1,8 +1,10 @@
 package pl.tobynartowski.limfy.ui.activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppViewActivity extends AppCompatActivity {
@@ -59,4 +62,13 @@ public class AppViewActivity extends AppCompatActivity {
         viewPager.setAdapter(new ViewPageAdapter(this));
         viewPager.setCurrentItem(1, false);
     }
+
+    public void logout() {
+        UserUtils.getInstance(this).destroySession();
+        startActivity(new Intent(AppViewActivity.this, LoginActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    @Override
+    public void onBackPressed() {}
 }

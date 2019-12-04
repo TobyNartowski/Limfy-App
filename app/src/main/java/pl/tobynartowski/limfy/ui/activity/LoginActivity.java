@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         ViewUtils.makeFullscreen(getWindow());
 
         if (UserUtils.getInstance(this).getId() != null) {
-            new Handler().postDelayed(this::switchToConnectActivity, 500);
+            new Handler().postDelayed(this::switchToAppActivity, 500);
             autoLogin = true;
         } else {
             autoLogin = false;
@@ -132,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                                             }
                                         });
 
-                                        switchToConnectActivity();
+                                        switchToAppActivity();
                                         break;
                                     }
                                 default:
@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void switchToConnectActivity() {
+    public void switchToAppActivity() {
         if (!autoLogin) {
             TranslateAnimation groupAnimation = new TranslateAnimation(0, 0, 0, 2500);
             groupAnimation.setFillAfter(false);
@@ -167,8 +167,8 @@ public class LoginActivity extends AppCompatActivity {
         imageAnimation.setDuration(1500);
         findViewById(R.id.login_image).startAnimation(imageAnimation);
 
-        new Handler().postDelayed(() -> startActivity(new Intent(this, ConnectActivity.class),
-                ActivityOptions.makeSceneTransitionAnimation(this).toBundle()), 1000);
+        new Handler().postDelayed(() -> startActivity( new Intent(this, AppViewActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle()), 490);
     }
 
     public void switchToRegisterActivity() {

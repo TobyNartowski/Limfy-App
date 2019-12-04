@@ -65,4 +65,11 @@
     <string name="app_history_entry_heartbeat_activity">kroków</string>
     <string name="app_history_no_data">Brak danych, twoje pomiary będą pojawiały się tutaj automatycznie.</string>
     <string name="app_history_no_data_image">Brak danych</string>
+
+    <string name="app_settings_name">Ustawienia</string>
+    <string name="app_settings_overall">Twoje dane</string>
+    <string name="app_settings_height_description">wysokość</string>
+    <string name="app_settings_weight_description">waga</string>
+    <string name="app_settings_button_change">Aktualizuj dane</string>
+    <string name="app_settings_button_logout">Wyloguj</string>
 </resources>
