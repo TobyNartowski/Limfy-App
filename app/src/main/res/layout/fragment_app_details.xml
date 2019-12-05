@@ -44,33 +44,15 @@
             android:textColor="@color/colorBlack"
             tools:ignore="HardcodedText" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/app_details_value1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/app_details_value1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/open_sans_bold"
-                android:text="Wartość 1"
-                android:textColor="@color/colorBlack"
-                android:textSize="36sp"
-                tools:ignore="HardcodedText" />
-
-            <ImageView
-                android:id="@+id/app_details_value1_icon"
-                android:layout_width="51dp"
-                android:layout_height="32dp"
-                android:layout_gravity="bottom"
-                android:layout_marginStart="24dp"
-                android:layout_marginBottom="6dp"
-                android:layout_weight="1"
-                android:scaleType="fitStart"
-                app:srcCompat="@drawable/drawable_heart"
-                tools:ignore="InefficientWeight" />
-        </LinearLayout>
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Wartość 1"
+            android:textColor="@color/colorBlack"
+            android:textSize="36sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_details_value1_description"

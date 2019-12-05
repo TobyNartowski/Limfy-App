@@ -165,10 +165,11 @@ public class LoginActivity extends AppCompatActivity {
         TranslateAnimation imageAnimation = new TranslateAnimation(0, 0, 0, -2500);
         imageAnimation.setFillAfter(false);
         imageAnimation.setDuration(1500);
-        findViewById(R.id.login_image).startAnimation(imageAnimation);
 
-        new Handler().postDelayed(() -> startActivity( new Intent(this, AppViewActivity.class),
-                ActivityOptions.makeSceneTransitionAnimation(this).toBundle()), 490);
+
+        startActivity( new Intent(this, AppViewActivity.class),
+                ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+        new Handler().postDelayed(() -> findViewById(R.id.login_image).startAnimation(imageAnimation), 300);
     }
 
     public void switchToRegisterActivity() {

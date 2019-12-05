@@ -6,15 +6,127 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.LoginActivity"
-    android:background="@color/colorRed">
+    android:background="@color/colorAccent">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="60dp"
-        android:layout_height="19dp"
-        android:text="Analysis"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/app_analysis_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Ty"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="42sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_average"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Twój styl życia"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/app_analysis_average_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Dobry"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_average_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="żyjesz zdrowiej, niż 81% osób"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_diseases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Ryzyko wystąpienia chorób"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryDark" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease1_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="o 34% niższe"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="28sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease1_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="udar mózgu"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease2_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="o 12% niższe"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="28sp"
+            android:layout_marginTop="18dp" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease2_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="choroby układu sercowo-naczyniowego"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease3_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="o 6% niższe"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="28sp"
+            android:layout_marginTop="18dp" />
+
+        <TextView
+            android:id="@+id/app_analysis_disease3_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="nowotwory"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

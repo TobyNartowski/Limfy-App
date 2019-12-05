@@ -62,7 +62,6 @@ public class AppDetailsFragment extends Fragment {
 
         TextView firstValue = view.findViewById(R.id.app_details_value1);
         TextView firstValueDescription = view.findViewById(R.id.app_details_value1_description);
-        ImageView firstValueIcon = view.findViewById(R.id.app_details_value1_icon);
 
         TextView secondValue = view.findViewById(R.id.app_details_value2);
         TextView secondValueDescription = view.findViewById(R.id.app_details_value2_description);

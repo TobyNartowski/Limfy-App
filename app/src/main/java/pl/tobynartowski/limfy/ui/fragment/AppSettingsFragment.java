@@ -1,9 +1,6 @@
 package pl.tobynartowski.limfy.ui.fragment;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +13,15 @@ import androidx.fragment.app.Fragment;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.ui.activity.AppViewActivity;
-import pl.tobynartowski.limfy.utils.UserUtils;
-import pl.tobynartowski.limfy.utils.ViewUtils;
 
 public class AppSettingsFragment extends Fragment {
 
     private static int userHeight = 183;
     private static int userWeight = 83;
 
-    NumberPicker heightPicker;
-    NumberPicker weightPicker;
+    private NumberPicker heightPicker;
+    private NumberPicker weightPicker;
+    private Button changedButton;
 
     @Nullable
     @Override
@@ -35,7 +31,7 @@ public class AppSettingsFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button changedButton = view.findViewById(R.id.app_settings_button_change);
+        changedButton = view.findViewById(R.id.app_settings_button_change);
         setButtonState(changedButton, false);
 
         heightPicker = view.findViewById(R.id.app_settings_height_picker);
@@ -73,6 +69,7 @@ public class AppSettingsFragment extends Fragment {
     public void onPause() {
         heightPicker.setValue(userHeight);
         weightPicker.setValue(userWeight);
+        setButtonState(changedButton, false);
         super.onPause();
     }
 

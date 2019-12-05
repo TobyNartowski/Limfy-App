@@ -42,6 +42,8 @@ public class ConnectActivity extends AppCompatActivity {
 
         new Handler().postDelayed(this::initBluetooth, 500);
 
+        findViewById(R.id.connect_arrow_back).setOnClickListener((v) -> onBackPressed());
+
         findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
         ImageView connectImage = findViewById(R.id.connect_image);
         connectImage.setImageResource(R.drawable.dummy_connect_off);

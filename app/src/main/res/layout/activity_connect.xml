@@ -7,12 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".ui.activity.ConnectActivity">
 
+    <ImageView
+        android:id="@+id/connect_arrow_back"
+        android:layout_width="316dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/image_back"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.346"
+        app:srcCompat="@drawable/drawable_arrow" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="310dp"
         android:layout_height="628dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="96dp"
         android:layout_marginEnd="32dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/connect_text_small"
@@ -22,12 +36,13 @@
 
         <TextView
             android:id="@+id/connect_text_main"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
             android:text="@string/connect_text_main"
             android:textColor="@color/colorAccent"
-            android:textSize="32sp" />
+            android:textSize="42sp" />
+
 
         <TextView
             android:id="@+id/connect_text_sub"
