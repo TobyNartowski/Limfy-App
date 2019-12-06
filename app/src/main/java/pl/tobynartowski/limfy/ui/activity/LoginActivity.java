@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,12 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
+
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
-import pl.tobynartowski.limfy.model.TokenResponse;
 import pl.tobynartowski.limfy.misc.SwipeTouchListener;
+import pl.tobynartowski.limfy.model.TokenResponse;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
@@ -50,8 +53,27 @@ public class LoginActivity extends AppCompatActivity {
         ViewUtils.makeFullscreen(getWindow());
 
         if (UserUtils.getInstance(this).getId() != null) {
-            new Handler().postDelayed(this::switchToAppActivity, 500);
-            autoLogin = true;
+            Call<Void> checkServerCall = RetrofitClient.getInstance().getApi().checkServerConnection();
+            checkServerCall.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.code() == 401) {
+                        UserUtils.getInstance(LoginActivity.this).destroySession();
+                        findViewById(R.id.login_group).setVisibility(View.VISIBLE);
+                        autoLogin = false;
+
+                    } else {
+                        new Handler().postDelayed(LoginActivity.this::switchToAppActivity, 500);
+                        autoLogin = true;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    ViewUtils.showToast(LoginActivity.this,
+                            getResources().getString(R.string.error_connection) + ": " + t.getMessage());
+                }
+            });
         } else {
             autoLogin = false;
             findViewById(R.id.login_group).setVisibility(View.VISIBLE);
@@ -64,6 +86,8 @@ public class LoginActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("new") != null) {
             ViewUtils.showToast(this, getResources().getString(R.string.info_registered));
+        } else if ("server".equals(getIntent().getStringExtra("error"))) {
+            ViewUtils.showToast(this, "Wystąpił błąd serwera, zaloguj się ponownie");
         }
 
         findViewById(R.id.login_layout).setOnTouchListener(new SwipeTouchListener(this) {
@@ -73,10 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.login_button_register).setOnClickListener((view) -> {
-            switchToRegisterActivity();
-        });
-
+        findViewById(R.id.login_button_register).setOnClickListener((view) -> switchToRegisterActivity());
         findViewById(R.id.login_button_login).setOnClickListener((view) -> {
             String passedLogin = ((TextView) findViewById(R.id.login_field_login)).getText().toString();
             String passedPassword = ((TextView) findViewById(R.id.login_field_password)).getText().toString();
@@ -155,21 +176,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void switchToAppActivity() {
-        if (!autoLogin) {
-            TranslateAnimation groupAnimation = new TranslateAnimation(0, 0, 0, 2500);
-            groupAnimation.setFillAfter(false);
-            groupAnimation.setDuration(1500);
-            findViewById(R.id.login_group).startAnimation(groupAnimation);
-        }
-
-        TranslateAnimation imageAnimation = new TranslateAnimation(0, 0, 0, -2500);
-        imageAnimation.setFillAfter(false);
-        imageAnimation.setDuration(1500);
-
-
         startActivity( new Intent(this, AppViewActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-        new Handler().postDelayed(() -> findViewById(R.id.login_image).startAnimation(imageAnimation), 300);
+
+        new Handler().postDelayed(() -> {
+            TranslateAnimation imageAnimation = new TranslateAnimation(0, 0, 0, -2500);
+            imageAnimation.setFillAfter(false);
+            imageAnimation.setDuration(1500);
+
+            if (!autoLogin) {
+                TranslateAnimation groupAnimation = new TranslateAnimation(0, 0, 0, 2500);
+                groupAnimation.setFillAfter(false);
+                groupAnimation.setDuration(1500);
+                findViewById(R.id.login_group).startAnimation(groupAnimation);
+            }
+
+            findViewById(R.id.login_image).startAnimation(imageAnimation);
+        }, 300);
     }
 
     public void switchToRegisterActivity() {

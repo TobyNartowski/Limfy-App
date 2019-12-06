@@ -26,6 +26,8 @@ import pl.tobynartowski.limfy.R;
 
 public class AppDetailsFragment extends Fragment {
 
+    private boolean chartShown = false;
+
     public enum AppDetailsWhich {APP_DETAILS_HEARTBEAT, APP_DETAILS_ACTIVITY};
 
     private LineChart chart;
@@ -37,14 +39,17 @@ public class AppDetailsFragment extends Fragment {
 
     @Override
     public void onPause() {
-        chart.setVisibility(View.INVISIBLE);
         super.onPause();
     }
 
     @Override
     public void onResume() {
-        chart.setVisibility(View.VISIBLE);
-        chart.animateY(1000, Easing.EaseOutCubic);
+        if (!chartShown) {
+            chart.setVisibility(View.VISIBLE);
+            chart.animateY(1000, Easing.EaseOutCubic);
+            chartShown = true;
+        }
+
         chart.invalidate();
         super.onResume();
     }

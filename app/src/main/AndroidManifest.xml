@@ -36,11 +36,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait" />
+
         <activity android:name=".ui.activity.AppViewActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.activity.ConnectActivity"
             android:screenOrientation="portrait" />

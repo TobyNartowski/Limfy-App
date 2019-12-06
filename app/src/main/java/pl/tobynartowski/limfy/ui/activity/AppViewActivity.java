@@ -14,6 +14,7 @@ import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
@@ -65,6 +66,11 @@ public class AppViewActivity extends AppCompatActivity {
 
     public void logout() {
         UserUtils.getInstance(this).destroySession();
+        // DEVELOPMENT
+        BluetoothUtils.setConnected(false);
+//            BluetoothUtils.disconnect();
+        DummyDataUtils.getInstance().stopTimers();
+
         startActivity(new Intent(AppViewActivity.this, LoginActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
     }

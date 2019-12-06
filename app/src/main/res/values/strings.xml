@@ -34,18 +34,6 @@
     <string name="app_disconnect_icon">Rozłącz</string>
     <string name="app_view_disconnected">Rozłączono urządzenie</string>
 
-    <!-- CLEANUP -->
-    <string name="app_actual_text_arrow">Przejdź niżej</string>
-    <string name="app_actual_text_calories_sub">spalonych</string>
-    <string name="app_actual_text_steps">zrobionych kroków</string>
-    <string name="app_actual_text_distance">twoja droga</string>
-    <string name="app_actual_text_heartbeat">tętno</string>
-    <string name="app_actual_text_sub">Dane pobierane bezpośrednio z urządzenia, pamiętaj, że nie są one poddane analizie, więc mogą się różnić od faktycznych!</string>
-    <string name="app_actual_text_main">Teraz</string>
-    <string name="app_actual_value_heartbeat">%1$d bpm</string>
-    <string name="app_actual_value_distance">%1$s m</string>
-    <string name="app_actual_value_calories">%1$s cal</string>
-
     <string name="app_details_arrow_down">Spadek</string>
     <string name="app_details_arrow_up">Wzrost</string>
     <string name="app_details_heartbeat_name">Praca serca</string>

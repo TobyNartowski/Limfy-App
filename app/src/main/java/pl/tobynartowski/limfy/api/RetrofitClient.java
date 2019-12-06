@@ -1,12 +1,17 @@
 package pl.tobynartowski.limfy.api;
 
+import android.content.Intent;
 import android.util.Base64;
 
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 import pl.tobynartowski.limfy.Limfy;
+import pl.tobynartowski.limfy.ui.activity.LoginActivity;
+import pl.tobynartowski.limfy.utils.BluetoothUtils;
+import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -55,7 +60,21 @@ public class RetrofitClient {
                     .addHeader("Authorization", "Bearer " + token)
                     .method(originalRequest.method(), originalRequest.body());
 
-            return chain.proceed(requestBuilder.build());
+            Response response = chain.proceed(requestBuilder.build());
+            if (response.code() == 401 && UserUtils.getInstance(Limfy.getContext()).getId() != null) {
+                UserUtils.getInstance(Limfy.getContext()).destroySession();
+                // DEVELOPMENT
+                BluetoothUtils.setConnected(false);
+//                BluetoothUtils.disconnect();
+                DummyDataUtils.getInstance().stopTimers();
+
+                Intent logoutIntent = new Intent(Limfy.getContext(), LoginActivity.class);
+                logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                logoutIntent.putExtra("error", "server");
+                Limfy.getContext().startActivity(logoutIntent);
+            }
+
+            return response;
         }).build();
 
         retrofit = new Retrofit.Builder()

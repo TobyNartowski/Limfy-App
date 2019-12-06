@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RestUpdater;
+import pl.tobynartowski.limfy.misc.SwipeTouchListener;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
@@ -43,6 +44,14 @@ public class ConnectActivity extends AppCompatActivity {
         new Handler().postDelayed(this::initBluetooth, 500);
 
         findViewById(R.id.connect_arrow_back).setOnClickListener((v) -> onBackPressed());
+        findViewById(R.id.connect_layout).setOnTouchListener(new SwipeTouchListener(this) {
+            @Override
+            public void onSwipeBottom() {
+                if (!connected) {
+                    onBackPressed();
+                }
+            }
+        });
 
         findViewById(R.id.connect_progress).setVisibility(View.INVISIBLE);
         ImageView connectImage = findViewById(R.id.connect_image);
@@ -132,11 +141,7 @@ public class ConnectActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         loadingHandler.removeCallbacksAndMessages(null);
-        if (BluetoothUtils.isConnected() && !connected) {
-            // DEVELOPMENT
-            BluetoothUtils.setConnected(false);
-//            BluetoothUtils.disconnect();
-        }
+
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }

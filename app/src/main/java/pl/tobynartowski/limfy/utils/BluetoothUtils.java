@@ -87,9 +87,11 @@ public class BluetoothUtils {
     }
 
     public static void disconnect() {
-        bluetoothGatt.disconnect();
-        bluetoothGatt.close();
-        connected = false;
+        if (connected && bluetoothGatt != null) {
+            bluetoothGatt.disconnect();
+            bluetoothGatt.close();
+            connected = false;
+        }
     }
 
     public static boolean isConnected() {

@@ -29,8 +29,10 @@ public class DummyDataUtils {
     }
 
     public void stopTimers() {
-        heartbeatTimer.cancel();
-        accelerometerTimer.cancel();
+        if (heartbeatTimer != null && accelerometerTimer != null) {
+            heartbeatTimer.cancel();
+            accelerometerTimer.cancel();
+        }
     }
 
     public static DummyDataUtils getInstance() {

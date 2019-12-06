@@ -16,6 +16,9 @@ import retrofit2.http.Path;
 
 public interface RestApi {
 
+    @GET("api/v1")
+    Call<Void> checkServerConnection();
+
     @FormUrlEncoded
     @POST("oauth/token")
     Call<TokenResponse> getToken(
