@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.google.gson.JsonObject;
-
-import java.io.IOException;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
@@ -64,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         new Handler().postDelayed(LoginActivity.this::switchToAppActivity, 500);
+                        RetrofitClient.getInstance().addToken(UserUtils.getInstance(LoginActivity.this).getBearer());
                         autoLogin = true;
                     }
                 }
@@ -72,6 +70,9 @@ public class LoginActivity extends AppCompatActivity {
                 public void onFailure(Call<Void> call, Throwable t) {
                     ViewUtils.showToast(LoginActivity.this,
                             getResources().getString(R.string.error_connection) + ": " + t.getMessage());
+                    new Handler().postDelayed(LoginActivity.this::switchToAppActivity, 500);
+                    RetrofitClient.getInstance().addToken(UserUtils.getInstance(LoginActivity.this).getBearer());
+                    autoLogin = true;
                 }
             });
         } else {
@@ -136,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                                                         }
                                                         UserUtils.getInstance(LoginActivity.this)
                                                                 .setSession(jsonObject.get("id").getAsString(), bearer);
+                                                        switchToAppActivity();
                                                         break;
                                                     case 404:
                                                     default:
@@ -152,8 +154,6 @@ public class LoginActivity extends AppCompatActivity {
                                                 view.setEnabled(true);
                                             }
                                         });
-
-                                        switchToAppActivity();
                                         break;
                                     }
                                 default:

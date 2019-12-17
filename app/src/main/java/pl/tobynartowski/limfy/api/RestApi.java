@@ -2,11 +2,13 @@ package pl.tobynartowski.limfy.api;
 
 import com.google.gson.JsonObject;
 
+import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.Measurement;
 import pl.tobynartowski.limfy.model.TokenResponse;
 import pl.tobynartowski.limfy.model.User;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -36,4 +38,10 @@ public interface RestApi {
 
     @POST("api/v1/measurements")
     Call<Void> postMeasurements(@Body Measurement measurement);
+
+    @DELETE("api/v1/users/{username}")
+    Call<Void> deleteEmptyUser(@Path("username") String username);
+
+    @POST("api/v1/body-data")
+    Call<Void> addBodyData(@Body BodyData bodyData);
 }

@@ -20,9 +20,11 @@
     <string name="login_button_login">Zaloguj się</string>
     <string name="login_button_register">Załóż konto</string>
 
-    <string name="image_back">Powróć</string>
+    <string name="register_image_back">Powróć</string>
     <string name="register_text_main">Zarejestruj się</string>
     <string name="register_text_sub">Załóż nowe konto i zacznij korzystać z aplikacji!</string>
+    <string name="register_error_internal">Błąd wewnętrzny, zrestartuj aplikację</string>
+    <string name="register_not_registered">Twoje konto nie zostało założone</string>
 
     <string name="connect_text_small">Zbliż swoje urządzenie do telefonu i kliknij na ikonę wyżej.</string>
     <string name="connect_text_sub">znajdź swoje urządzenie poprzez Bluetooth!</string>
@@ -63,5 +65,7 @@
     <string name="app_settings_height_description">wysokość</string>
     <string name="app_settings_weight_description">waga</string>
     <string name="app_settings_button_change">Aktualizuj dane</string>
+    <string name="app_settings_button_change_new">Dodaj dane</string>
     <string name="app_settings_button_logout">Wyloguj</string>
+    <string name="app_settings_button_cancel">Anuluj</string>
 </resources>

@@ -6,10 +6,12 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.net.URI;
+
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
-import pl.tobynartowski.limfy.model.User;
 import pl.tobynartowski.limfy.misc.SwipeTouchListener;
+import pl.tobynartowski.limfy.model.User;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
@@ -48,7 +50,13 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(Call<User> call, Response<User> response) {
                         switch (response.code()) {
                             case 201:
-                                switchToLoginActivity(user.getUsername());
+                                Intent intent = new Intent(RegisterActivity.this, RegisterDetailsActivity.class);
+                                if (response.body() != null && response.body().getSelf() != null) {
+                                    intent.putExtra("self",  response.body().getSelf().toString());
+                                    intent.putExtra("username", user.getUsername());
+                                }
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                                 break;
                             case 409:
                                 ViewUtils.showToast(RegisterActivity.this,
@@ -57,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 break;
                             default:
                                 ViewUtils.showToast(RegisterActivity.this,
-                                        getResources().getString(R.string.error_internal)
+                                        getResources().getString(R.string.register_error_internal)
                                                 + ": " + response.code());
                                 view.setEnabled(true);
                                 break;
@@ -68,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         ViewUtils.showToast(RegisterActivity.this,
-                                getResources().getString(R.string.error_connection) + ": " + t.getMessage());
+                                getResources().getString(R.string.error_internal) + ": " + t.getMessage());
                         view.setEnabled(true);
                     }
                 });

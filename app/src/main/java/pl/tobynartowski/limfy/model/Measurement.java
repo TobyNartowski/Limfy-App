@@ -1,6 +1,10 @@
 package pl.tobynartowski.limfy.model;
 
-public class Measurement {
+import java.io.Serializable;
+
+public class Measurement implements Serializable {
+
+    private static final long serialVersionUID = 1824507469355805920L;
 
     private int heartbeat;
     private int steps;

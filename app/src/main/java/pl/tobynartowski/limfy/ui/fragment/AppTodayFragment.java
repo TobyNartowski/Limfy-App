@@ -20,6 +20,7 @@ import java.util.TimerTask;
 
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.model.BluetoothData;
+import pl.tobynartowski.limfy.ui.activity.AppViewActivity;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
 
 public class AppTodayFragment extends Fragment implements Observer {
@@ -82,18 +83,15 @@ public class AppTodayFragment extends Fragment implements Observer {
         if (o instanceof BluetoothData) {
             BluetoothData bluetoothData = (BluetoothData) o;
 
-            /* DEVELOPMENT
             if (bluetoothData.isDisconnected()) {
-                BluetoothUtils.drawable_disconnect();
-                runOnUiThread(() -> {
-                    Intent connectionBrokenIntent = new Intent(AppActualActivity.this, ConnectActivity.class);
-                    connectionBrokenIntent.putExtra("error", "connection");
-                    startActivity(connectionBrokenIntent,
-                            ActivityOptions.makeSceneTransitionAnimation(AppActualActivity.this).toBundle());
-                });
+                BluetoothUtils.disconnect();
+                AppViewActivity activity = (AppViewActivity) getActivity();
+                if (activity != null) {
+                    activity.onConnectionBroken();
+                }
+            } else {
+                loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
             }
-            */
-            loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
         }
     }
 }

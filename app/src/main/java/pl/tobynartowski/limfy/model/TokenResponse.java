@@ -2,7 +2,11 @@ package pl.tobynartowski.limfy.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TokenResponse {
+import java.io.Serializable;
+
+public class TokenResponse implements Serializable {
+
+    private static final long serialVersionUID = 874150272786925008L;
 
     @SerializedName("access_token")
     private String accessToken;

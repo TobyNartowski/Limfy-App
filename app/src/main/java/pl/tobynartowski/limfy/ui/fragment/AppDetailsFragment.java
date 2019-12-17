@@ -28,7 +28,7 @@ public class AppDetailsFragment extends Fragment {
 
     private boolean chartShown = false;
 
-    public enum AppDetailsWhich {APP_DETAILS_HEARTBEAT, APP_DETAILS_ACTIVITY};
+    public enum AppDetailsWhich {APP_DETAILS_HEARTBEAT, APP_DETAILS_ACTIVITY}
 
     private LineChart chart;
     private AppDetailsWhich which;

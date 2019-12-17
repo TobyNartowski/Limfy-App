@@ -3,8 +3,6 @@ package pl.tobynartowski.limfy.ui.activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +12,6 @@ import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
-import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 
@@ -47,11 +44,9 @@ public class AppViewActivity extends AppCompatActivity {
 
         connectIcon.setOnClickListener(v -> {
             if (BluetoothUtils.isConnected()) {
-                // DEVELOPMENT
-                BluetoothUtils.setConnected(false);
                 connectIcon.setImageResource(R.drawable.drawable_connect);
                 ViewUtils.showToast(this, getResources().getString(R.string.app_view_disconnected));
-//                BluetoothUtils.disconnect();
+                BluetoothUtils.disconnect();
             } else {
                 startActivity(new Intent(Limfy.getContext(), ConnectActivity.class));
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -66,13 +61,17 @@ public class AppViewActivity extends AppCompatActivity {
 
     public void logout() {
         UserUtils.getInstance(this).destroySession();
-        // DEVELOPMENT
-        BluetoothUtils.setConnected(false);
-//            BluetoothUtils.disconnect();
-        DummyDataUtils.getInstance().stopTimers();
+        BluetoothUtils.disconnect();
 
         startActivity(new Intent(AppViewActivity.this, LoginActivity.class),
                 ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+    }
+
+    public void onConnectionBroken() {
+        runOnUiThread(() -> {
+            ((ImageView) findViewById(R.id.app_connect_icon)).setImageResource(R.drawable.drawable_connect);
+            ViewUtils.showToast(this, getResources().getString(R.string.error_device_disconnected));
+        });
     }
 
     @Override

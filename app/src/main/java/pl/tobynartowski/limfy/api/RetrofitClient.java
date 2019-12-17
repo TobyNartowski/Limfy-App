@@ -3,6 +3,10 @@ package pl.tobynartowski.limfy.api;
 import android.content.Intent;
 import android.util.Base64;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.xpbytes.gson.hal.HalTypeAdapterFactory;
+
 import java.nio.charset.StandardCharsets;
 
 import okhttp3.OkHttpClient;
@@ -33,9 +37,13 @@ public class RetrofitClient {
     }
 
     private RetrofitClient() {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new HalTypeAdapterFactory())
+                .create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         String bearer = UserUtils.getInstance(Limfy.getContext()).getBearer();
@@ -62,11 +70,9 @@ public class RetrofitClient {
 
             Response response = chain.proceed(requestBuilder.build());
             if (response.code() == 401 && UserUtils.getInstance(Limfy.getContext()).getId() != null) {
+
                 UserUtils.getInstance(Limfy.getContext()).destroySession();
-                // DEVELOPMENT
-                BluetoothUtils.setConnected(false);
-//                BluetoothUtils.disconnect();
-                DummyDataUtils.getInstance().stopTimers();
+                BluetoothUtils.disconnect();
 
                 Intent logoutIntent = new Intent(Limfy.getContext(), LoginActivity.class);
                 logoutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -77,9 +83,13 @@ public class RetrofitClient {
             return response;
         }).build();
 
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new HalTypeAdapterFactory())
+                .create();
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(okHttpClient)
                 .build();
     }
