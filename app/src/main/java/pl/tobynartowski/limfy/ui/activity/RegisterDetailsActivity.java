@@ -45,7 +45,7 @@ public class RegisterDetailsActivity extends AppCompatActivity {
             throw new IllegalStateException();
         }
 
-        super.onBackPressed();
+        startActivity(new Intent(RegisterDetailsActivity.this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
     }
 

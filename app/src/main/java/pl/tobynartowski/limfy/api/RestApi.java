@@ -6,6 +6,7 @@ import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.Measurement;
 import pl.tobynartowski.limfy.model.TokenResponse;
 import pl.tobynartowski.limfy.model.User;
+import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -44,4 +45,7 @@ public interface RestApi {
 
     @POST("api/v1/body-data")
     Call<Void> addBodyData(@Body BodyData bodyData);
+
+    @GET("api/v1/users/{id}/measurements/average")
+    Call<MeasurementAverageWrapper> getMeasurements(@Path("id") String id);
 }

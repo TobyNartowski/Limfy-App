@@ -25,6 +25,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ViewUtils.makeFullscreen(getWindow());
+        findViewById((R.id.register_button_register)).setEnabled(true);
 
         findViewById(R.id.register_arrow_back).setOnClickListener((view) -> switchToLoginActivity(null));
         findViewById(R.id.register_layout).setOnTouchListener(new SwipeTouchListener(this) {

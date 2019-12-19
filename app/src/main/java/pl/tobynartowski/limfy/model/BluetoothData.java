@@ -1,7 +1,13 @@
 package pl.tobynartowski.limfy.model;
 
+import android.icu.util.Measure;
+
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Observable;
+
+import pl.tobynartowski.limfy.utils.DataUtils;
 
 public class BluetoothData extends Observable implements Serializable {
 
@@ -26,6 +32,28 @@ public class BluetoothData extends Observable implements Serializable {
     }
 
     private BluetoothData() {
+        if (DataUtils.getInstance().getMeasurements() != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date today = calendar.getTime();
+
+            MeasurementAverage initial = null;
+
+            for (MeasurementAverage m : DataUtils.getInstance().getMeasurements()) {
+                if (m.getTimestamp().after(today)) {
+                    initial = m;
+                }
+            }
+
+            if (initial != null) {
+                heartbeat = (int) Math.floor(initial.getHeartbeatAverage());
+                totalSteps = initial.getStepsSum();
+            }
+        }
+
         disconnected = false;
     }
 

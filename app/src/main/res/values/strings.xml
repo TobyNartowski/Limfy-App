@@ -68,4 +68,9 @@
     <string name="app_settings_button_change_new">Dodaj dane</string>
     <string name="app_settings_button_logout">Wyloguj</string>
     <string name="app_settings_button_cancel">Anuluj</string>
+    <string name="app_settings_age_text">Dodaj datę urodzenia</string>
+    <string name="app_settings_age_error">Niepoprawna data urodzenia!</string>
+    <string name="app_settings_age_format">Data urodzenia: %1$d/%2$d/%3$d</string>
+    <string name="app_settings_female">Kobieta</string>
+    <string name="app_settings_male">Mężczyzna</string>
 </resources>

@@ -151,7 +151,7 @@
                 android:fontFamily="@font/open_sans_bold"
                 android:buttonTint="@color/colorAccent"
                 android:textColor="@color/colorWhiteGray"
-                android:text="Mężczyzna" />
+                android:text="@string/app_settings_male" />
 
             <RadioButton
                 android:id="@+id/radioFemale"
@@ -163,9 +163,19 @@
                 android:fontFamily="@font/open_sans_bold"
                 android:buttonTint="@color/colorAccent"
                 android:textColor="@color/colorWhiteGray"
-                android:text="Kobieta" />
+                android:text="@string/app_settings_female" />
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/app_settings_age_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:layout_marginTop="20dp"
+            android:text="@string/app_settings_age_text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <LinearLayout

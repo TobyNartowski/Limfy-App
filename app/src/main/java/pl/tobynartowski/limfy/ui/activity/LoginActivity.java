@@ -94,7 +94,9 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.login_layout).setOnTouchListener(new SwipeTouchListener(this) {
             @Override
             public void onSwipeTop() {
-                switchToRegisterActivity();
+                if (UserUtils.getInstance(LoginActivity.this).getId() == null) {
+                    switchToRegisterActivity();
+                }
             }
         });
 

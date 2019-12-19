@@ -15,7 +15,6 @@ import okhttp3.Response;
 import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.ui.activity.LoginActivity;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
-import pl.tobynartowski.limfy.utils.DummyDataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
