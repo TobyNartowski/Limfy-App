@@ -1,6 +1,9 @@
 package pl.tobynartowski.limfy.utils;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import pl.tobynartowski.limfy.model.MeasurementAverage;
 
@@ -23,5 +26,45 @@ public class DataUtils {
 
     public List<MeasurementAverage> getMeasurements() {
         return measurements;
+    }
+
+    public MeasurementAverage getTodayMeasurement() {
+        if (measurements == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date today = calendar.getTime();
+
+        return measurements
+                .stream()
+                .filter(m -> m.getTimestamp().after(today))
+                .findAny()
+                .orElse(null);
+    }
+
+    public List<MeasurementAverage> getThisWeekMeasurements() {
+        if (measurements == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        Date monday = calendar.getTime();
+        Date nextMonday = new Date(monday.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+        return measurements
+                .stream()
+                .filter(m -> m.getTimestamp().after(monday) && m.getTimestamp().before(nextMonday))
+                .collect(Collectors.toList());
     }
 }

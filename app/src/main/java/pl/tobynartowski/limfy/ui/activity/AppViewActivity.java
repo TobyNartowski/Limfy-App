@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
+import pl.tobynartowski.limfy.model.BluetoothData;
+import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
@@ -82,16 +84,17 @@ public class AppViewActivity extends AppCompatActivity {
             RetrofitClient.getInstance().getApi().getMeasurements(userId).enqueue(new Callback<MeasurementAverageWrapper>() {
                 @Override
                 public void onResponse(Call<MeasurementAverageWrapper> call, Response<MeasurementAverageWrapper> response) {
-                    if (response.code() == 200 && response.body() != null) {
+                    if (response.code() == 200 && response.body() != null && response.body().getEmbedded() != null) {
                         DataUtils.getInstance().setMeasurements(response.body().getEmbedded().getMeasurements());
-                        onLoaded();
                     }
+                    onLoaded();
                 }
 
                 @Override
                 public void onFailure(Call<MeasurementAverageWrapper> call, Throwable t) {
                     ViewUtils.showToast(AppViewActivity.this,
                             getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    onLoaded();
                 }
             });
         }
@@ -99,7 +102,9 @@ public class AppViewActivity extends AppCompatActivity {
 
     public void logout() {
         UserUtils.getInstance(this).destroySession();
+        DataUtils.getInstance().setMeasurements(null);
         BluetoothUtils.disconnect();
+        BluetoothData.getInstance().clearData();
 
         startActivity(new Intent(AppViewActivity.this, LoginActivity.class));
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
@@ -111,7 +116,6 @@ public class AppViewActivity extends AppCompatActivity {
             ViewUtils.showToast(this, getResources().getString(R.string.error_device_disconnected));
         });
     }
-
     @Override
     public void onBackPressed() {}
 }

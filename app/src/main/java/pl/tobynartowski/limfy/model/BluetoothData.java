@@ -1,10 +1,6 @@
 package pl.tobynartowski.limfy.model;
 
-import android.icu.util.Measure;
-
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Observable;
 
 import pl.tobynartowski.limfy.utils.DataUtils;
@@ -13,7 +9,7 @@ public class BluetoothData extends Observable implements Serializable {
 
     private static final long serialVersionUID = -2734520847664508134L;
 
-    public enum ChangeType {HEARTBEAT, STEPS, SHAKINESS, DISCONNECT, NONE};
+    public enum ChangeType {HEARTBEAT, STEPS, SHAKINESS, DISCONNECT, NONE}
 
     private int heartbeat;
     private int shakiness;
@@ -32,26 +28,10 @@ public class BluetoothData extends Observable implements Serializable {
     }
 
     private BluetoothData() {
-        if (DataUtils.getInstance().getMeasurements() != null) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
-            Date today = calendar.getTime();
-
-            MeasurementAverage initial = null;
-
-            for (MeasurementAverage m : DataUtils.getInstance().getMeasurements()) {
-                if (m.getTimestamp().after(today)) {
-                    initial = m;
-                }
-            }
-
-            if (initial != null) {
-                heartbeat = (int) Math.floor(initial.getHeartbeatAverage());
-                totalSteps = initial.getStepsSum();
-            }
+        MeasurementAverage todayMeasurements = DataUtils.getInstance().getTodayMeasurement();
+        if (todayMeasurements != null) {
+            heartbeat = (int) Math.floor(todayMeasurements.getHeartbeatAverage());
+            totalSteps = todayMeasurements.getStepsSum();
         }
 
         disconnected = false;
@@ -110,5 +90,12 @@ public class BluetoothData extends Observable implements Serializable {
     public void notifyObservers() {
         setChanged();
         super.notifyObservers();
+    }
+
+    public synchronized void clearData() {
+        heartbeat = 0;
+        shakiness = 0;
+        steps = 0;
+        totalSteps = 0;
     }
 }

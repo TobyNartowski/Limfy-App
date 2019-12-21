@@ -40,6 +40,15 @@
     <string name="app_details_arrow_up">Wzrost</string>
     <string name="app_details_heartbeat_name">Praca serca</string>
     <string name="app_details_activity_name">Aktywność</string>
+    <string name="app_details_heartbeat_average">średnia pulsu</string>
+    <string name="app_details_no_data_today">brak dzisiejszych danych</string>
+    <string name="app_details_no_data_week">brak tygodniowych danych</string>
+    <string name="app_details_higher_today">wyższa dzisiaj</string>
+    <string name="app_details_lower_today">niższa dzisiaj</string>
+    <string name="app_details_higher_week">wyższa w tym tygodniu</string>
+    <string name="app_details_lower_week">niższa w tym tygodniu</string>
+    <string name="app_details_no_changes">brak zmian</string>
+    <string name="app_details_steps_average">kroków dziennie</string>
 
     <string name="app_today_name">Twój dzień</string>
     <string name="app_today_heartbeat">Praca serca</string>
