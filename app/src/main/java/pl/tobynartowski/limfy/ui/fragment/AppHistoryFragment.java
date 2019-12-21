@@ -11,9 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.util.Random;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 import pl.tobynartowski.limfy.R;
+import pl.tobynartowski.limfy.model.MeasurementAverage;
+import pl.tobynartowski.limfy.utils.DataUtils;
 
 public class AppHistoryFragment extends Fragment {
 
@@ -25,17 +31,21 @@ public class AppHistoryFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        Random random = new Random(47);
-//        for (int i = 0; i < 10; i++) {
-//            LinearLayout entry = (LinearLayout) View.inflate(getContext(), R.layout.layout_history_entry, null);
-//            ((TextView) entry.findViewById(R.id.app_history_entry_heartbeat)).setText(Integer.toString(random.nextInt(10) + 70));
-//            ((TextView) entry.findViewById(R.id.app_history_entry_activity)).setText(Integer.toString(random.nextInt(300) + 1000));
-//            ((TextView) entry.findViewById(R.id.app_history_entry_date)).setText((29 - i) + ".10.2018");
-//            ((LinearLayout) view.findViewById(R.id.app_history_entry_container)).addView(entry);
-//        }
-
-        view.findViewById(R.id.app_history_no_data).setVisibility(View.VISIBLE);
-        view.findViewById(R.id.app_history_measurements).setVisibility(View.GONE);
+        Format formatter = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        if (DataUtils.getInstance().getMeasurements() != null) {
+            List<MeasurementAverage> measurementHistory = DataUtils.getInstance().getMeasurements();
+            Collections.reverse(measurementHistory);
+            for (MeasurementAverage measurement : measurementHistory) {
+                LinearLayout entry = (LinearLayout) View.inflate(getContext(), R.layout.layout_history_entry, null);
+                ((TextView) entry.findViewById(R.id.app_history_entry_heartbeat)).setText(String.format(Locale.getDefault(), "%.2f", measurement.getHeartbeatAverage()));
+                ((TextView) entry.findViewById(R.id.app_history_entry_activity)).setText(String.format(Locale.getDefault(), "%d", measurement.getStepsSum()));
+                ((TextView) entry.findViewById(R.id.app_history_entry_date)).setText(formatter.format(measurement.getTimestamp()));
+                ((LinearLayout) view.findViewById(R.id.app_history_entry_container)).addView(entry);
+            }
+        } else {
+            view.findViewById(R.id.app_history_no_data).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.app_history_measurements).setVisibility(View.GONE);
+        }
 
         super.onViewCreated(view, savedInstanceState);
     }

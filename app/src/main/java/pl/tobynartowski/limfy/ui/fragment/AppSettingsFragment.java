@@ -2,6 +2,7 @@ package pl.tobynartowski.limfy.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +27,19 @@ import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.Gender;
 import pl.tobynartowski.limfy.ui.activity.AppViewActivity;
 import pl.tobynartowski.limfy.ui.activity.RegisterDetailsActivity;
+import pl.tobynartowski.limfy.utils.DataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 
 public class AppSettingsFragment extends Fragment {
 
-    private static int userHeight = 183;
-    private static int userWeight = 83;
-    private static Gender gender = Gender.MALE;
+    private static int userHeight;
+    private static int userWeight;
+    private static Gender gender;
 
     private NumberPicker heightPicker;
     private NumberPicker weightPicker;
@@ -74,10 +77,11 @@ public class AppSettingsFragment extends Fragment {
         dateText = view.findViewById(R.id.app_settings_age_text);
         Button logoutButton = view.findViewById(R.id.app_settings_button_logout);
 
-        if (UserUtils.getInstance(Limfy.getContext()).getId() != null) {
-            userHeight = 183;
-            userWeight = 83;
-            gender = Gender.MALE;
+        if (UserUtils.getInstance(Limfy.getContext()).getId() != null && DataUtils.getInstance().getBodyData() != null) {
+            BodyData userData = DataUtils.getInstance().getBodyData();
+            userHeight = userData.getHeight();
+            userWeight = userData.getWeight();
+            gender = userData.getGender();
             newUser = false;
 
             if (gender == Gender.MALE) {
@@ -90,10 +94,29 @@ public class AppSettingsFragment extends Fragment {
             weightPicker.setOnValueChangedListener((picker, oldVal, newVal) -> checkButtonState());
 
             changedButton.setOnClickListener(v -> {
-                setButtonState(changedButton, false);
-                userHeight = heightPicker.getValue();
-                userWeight = weightPicker.getValue();
-                gender = radioGenderButton.getCheckedRadioButtonId() == maleButton.getId() ? Gender.MALE : Gender.FEMALE;
+                BodyData bodyData = new BodyData(
+                        radioGenderButton.getCheckedRadioButtonId() == maleButton.getId() ? Gender.MALE : Gender.FEMALE,
+                        weightPicker.getValue(),
+                        heightPicker.getValue()
+                );
+                RetrofitClient.getInstance().getApi()
+                        .setBodyData(UserUtils.getInstance(getContext()).getId(), bodyData).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.code() == 200) {
+                            setButtonState(changedButton, false);
+                            userHeight = bodyData.getHeight();
+                            userWeight = bodyData.getWeight();
+                            gender = bodyData.getGender();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        ViewUtils.showToast(Limfy.getContext(),
+                                getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    }
+                });
             });
 
             logoutButton.setOnClickListener(v -> {

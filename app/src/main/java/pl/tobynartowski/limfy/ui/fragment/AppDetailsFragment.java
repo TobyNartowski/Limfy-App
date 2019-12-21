@@ -252,9 +252,6 @@ public class AppDetailsFragment extends Fragment {
             }
         }
 
-        // TODO: Reverse list, Collections.reverse throwing NegativeArraySizeException: -2
-        Collections.reverse(values);
-
         LineDataSet lineDataSet;
         if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
             lineDataSet = (LineDataSet) chart.getData().getDataSetByIndex(0);

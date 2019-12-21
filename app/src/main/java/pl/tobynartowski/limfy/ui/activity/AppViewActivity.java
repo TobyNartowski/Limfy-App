@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
@@ -27,6 +29,9 @@ import retrofit2.Response;
 
 public class AppViewActivity extends AppCompatActivity {
 
+    private AtomicInteger initialQueries = new AtomicInteger(0);
+    private static final int ALL_QUERIES = 2;
+
     @Override
     protected void onResumeFragments() {
         ImageView connectIcon = findViewById(R.id.app_connect_icon);
@@ -37,6 +42,12 @@ public class AppViewActivity extends AppCompatActivity {
         }
 
         super.onResumeFragments();
+    }
+
+    private void ready() {
+        if (initialQueries.incrementAndGet() == ALL_QUERIES) {
+            onLoaded();
+        }
     }
 
     public void onLoaded() {
@@ -87,14 +98,31 @@ public class AppViewActivity extends AppCompatActivity {
                     if (response.code() == 200 && response.body() != null && response.body().getEmbedded() != null) {
                         DataUtils.getInstance().setMeasurements(response.body().getEmbedded().getMeasurements());
                     }
-                    onLoaded();
+                    ready();
                 }
 
                 @Override
                 public void onFailure(Call<MeasurementAverageWrapper> call, Throwable t) {
                     ViewUtils.showToast(AppViewActivity.this,
                             getResources().getString(R.string.error_internal) + ": " + t.getMessage());
-                    onLoaded();
+                    ready();
+                }
+            });
+
+            RetrofitClient.getInstance().getApi().getBodyData(userId).enqueue(new Callback<BodyData>() {
+                @Override
+                public void onResponse(Call<BodyData> call, Response<BodyData> response) {
+                    if (response.code() == 200 && response.body() != null) {
+                        DataUtils.getInstance().setBodyData(response.body());
+                    }
+                    ready();
+                }
+
+                @Override
+                public void onFailure(Call<BodyData> call, Throwable t) {
+                    ViewUtils.showToast(AppViewActivity.this,
+                            getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    ready();
                 }
             });
         }

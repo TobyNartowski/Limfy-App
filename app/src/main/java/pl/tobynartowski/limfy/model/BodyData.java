@@ -21,6 +21,12 @@ public class BodyData implements Serializable {
         this.user = user;
     }
 
+    public BodyData(Gender gender, int weight, int height) {
+        this.gender = gender;
+        this.weight = weight;
+        this.height = height;
+    }
+
     public Gender getGender() {
         return gender;
     }

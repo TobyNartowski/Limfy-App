@@ -14,6 +14,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -48,4 +49,10 @@ public interface RestApi {
 
     @GET("api/v1/users/{id}/measurements/average")
     Call<MeasurementAverageWrapper> getMeasurements(@Path("id") String id);
+
+    @GET("api/v1/users/{id}/body-data")
+    Call<BodyData> getBodyData(@Path("id") String id);
+
+    @PATCH("api/v1/users/{id}/body-data")
+    Call<Void> setBodyData(@Path("id") String id, @Body BodyData bodyData);
 }

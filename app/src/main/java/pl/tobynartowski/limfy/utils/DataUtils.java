@@ -1,10 +1,12 @@
 package pl.tobynartowski.limfy.utils;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.MeasurementAverage;
 
 public class DataUtils {
@@ -19,13 +21,25 @@ public class DataUtils {
     }
 
     private List<MeasurementAverage> measurements;
+    private BodyData bodyData;
 
     public void setMeasurements(List<MeasurementAverage> measurements) {
         this.measurements = measurements;
+        if (measurements != null) {
+            Collections.reverse(this.measurements);
+        }
     }
 
     public List<MeasurementAverage> getMeasurements() {
         return measurements;
+    }
+
+    public BodyData getBodyData() {
+        return bodyData;
+    }
+
+    public void setBodyData(BodyData bodyData) {
+        this.bodyData = bodyData;
     }
 
     public MeasurementAverage getTodayMeasurement() {
