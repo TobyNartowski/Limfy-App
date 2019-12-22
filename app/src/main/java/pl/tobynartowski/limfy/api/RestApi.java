@@ -2,11 +2,13 @@ package pl.tobynartowski.limfy.api;
 
 import com.google.gson.JsonObject;
 
+import pl.tobynartowski.limfy.model.AnalysisWrapper;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Disease;
 import pl.tobynartowski.limfy.model.Measurement;
+import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import pl.tobynartowski.limfy.model.TokenResponse;
 import pl.tobynartowski.limfy.model.User;
-import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -17,6 +19,7 @@ import retrofit2.http.Header;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 
 public interface RestApi {
 
@@ -55,4 +58,10 @@ public interface RestApi {
 
     @PATCH("api/v1/users/{id}/body-data")
     Call<Void> setBodyData(@Path("id") String id, @Body BodyData bodyData);
+
+    @GET("api/v1/users/{id}/analyses")
+    Call<AnalysisWrapper> getAnalyses(@Path("id") String id);
+
+    @GET
+    Call<Disease> getDisease(@Url String url);
 }

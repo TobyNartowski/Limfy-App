@@ -1,6 +1,5 @@
 package pl.tobynartowski.limfy.ui.activity;
 
-import android.app.ActivityOptions;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanCallback;

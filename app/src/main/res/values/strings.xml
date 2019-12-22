@@ -82,4 +82,19 @@
     <string name="app_settings_age_format">Data urodzenia: %1$d/%2$d/%3$d</string>
     <string name="app_settings_female">Kobieta</string>
     <string name="app_settings_male">Mężczyzna</string>
+
+    <string name="app_analysis_value_best">Bardzo zdrowy</string>
+    <string name="app_analysis_value_best_description">jest znakomicie, tak trzymaj</string>
+    <string name="app_analysis_value_good">Zdrowy</string>
+    <string name="app_analysis_value_good_description">wszystko w porządku, tak trzymaj</string>
+    <string name="app_analysis_value_ok">Poprawny</string>
+    <string name="app_analysis_value_ok_description">mogłoby być lepiej</string>
+    <string name="app_analysis_value_bad">Niezdrowy</string>
+    <string name="app_analysis_value_bad_description">postaraj się zmienić swoje nawyki</string>
+    <string name="app_analysis_value_worst">Bardzo niezdrowy</string>
+    <string name="app_analysis_value_worst_description">koniecznie zmień swoje nawyki</string>
+    <string name="app_analysis_no_data_image">Brak danych</string>
+    <string name="app_analysis_no_data_text">Przetwarzamy twoje dane, tutaj będą pojawiały się analizy twojego zdrowia.</string>
+    <string name="app_analysis_you">Ty</string>
+    <string name="app_analysis_you_description">Twój styl życia</string>
 </resources>

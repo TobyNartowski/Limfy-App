@@ -9,7 +9,7 @@
     android:background="@color/colorAccent">
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
+        android:id="@+id/app_analysis_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
-            android:text="Ty"
+            android:text="@string/app_analysis_you"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="42sp" />
 
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:fontFamily="@font/open_sans_bold"
-            android:text="Twój styl życia"
+            android:text="@string/app_analysis_you_description"
             android:textAllCaps="true"
             android:textColor="@color/colorPrimaryDark" />
 
@@ -50,16 +50,18 @@
             android:fontFamily="@font/open_sans_bold"
             android:text="Dobry"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="36sp" />
+            android:textSize="36sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_average_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans"
-            android:text="żyjesz zdrowiej, niż 81% osób"
+            android:text="Tak trzymaj"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_diseases"
@@ -69,7 +71,8 @@
             android:fontFamily="@font/open_sans_bold"
             android:text="Ryzyko wystąpienia chorób"
             android:textAllCaps="true"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorPrimaryDark"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease1_value"
@@ -78,7 +81,8 @@
             android:fontFamily="@font/open_sans_bold"
             android:text="o 34% niższe"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="28sp" />
+            android:textSize="28sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease1_description"
@@ -87,7 +91,8 @@
             android:fontFamily="@font/open_sans"
             android:text="udar mózgu"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease2_value"
@@ -97,7 +102,8 @@
             android:text="o 12% niższe"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="28sp"
-            android:layout_marginTop="18dp" />
+            android:layout_marginTop="18dp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease2_description"
@@ -106,7 +112,8 @@
             android:fontFamily="@font/open_sans"
             android:text="choroby układu sercowo-naczyniowego"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease3_value"
@@ -116,7 +123,8 @@
             android:text="o 6% niższe"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="28sp"
-            android:layout_marginTop="18dp" />
+            android:layout_marginTop="18dp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/app_analysis_disease3_description"
@@ -125,8 +133,43 @@
             android:fontFamily="@font/open_sans"
             android:text="nowotwory"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            tools:ignore="HardcodedText" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/app_analysis_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/app_analysis_no_data_image"
+            android:layout_width="wrap_content"
+            android:layout_height="268dp"
+            android:layout_marginTop="72dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/app_analysis_no_data_image"
+            app:srcCompat="@drawable/dummy_analysis" />
+
+        <TextView
+            android:id="@+id/app_analysis_no_data_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:gravity="center"
+            android:text="@string/app_analysis_no_data_text"
+            android:textColor="@color/colorBlack" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

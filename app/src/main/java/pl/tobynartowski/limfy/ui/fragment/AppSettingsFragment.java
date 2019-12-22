@@ -2,7 +2,6 @@ package pl.tobynartowski.limfy.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,6 @@ import pl.tobynartowski.limfy.utils.ViewUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Body;
 
 public class AppSettingsFragment extends Fragment {
 

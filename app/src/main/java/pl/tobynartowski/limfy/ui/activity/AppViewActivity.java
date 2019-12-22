@@ -15,8 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
+import pl.tobynartowski.limfy.model.AnalysisWrapper;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Disease;
 import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
 import pl.tobynartowski.limfy.utils.BluetoothUtils;
@@ -30,7 +32,10 @@ import retrofit2.Response;
 public class AppViewActivity extends AppCompatActivity {
 
     private AtomicInteger initialQueries = new AtomicInteger(0);
-    private static final int ALL_QUERIES = 2;
+    private static final int ALL_QUERIES = 3;
+
+    private AtomicInteger analysesLoaded = new AtomicInteger(0);
+    private int allAnalyses = 0;
 
     @Override
     protected void onResumeFragments() {
@@ -45,8 +50,14 @@ public class AppViewActivity extends AppCompatActivity {
     }
 
     private void ready() {
-        if (initialQueries.incrementAndGet() == ALL_QUERIES) {
+        if (initialQueries.incrementAndGet() >= ALL_QUERIES) {
             onLoaded();
+        }
+    }
+
+    private void analysisLoaded() {
+        if (analysesLoaded.incrementAndGet() >= allAnalyses) {
+            ready();
         }
     }
 
@@ -125,12 +136,57 @@ public class AppViewActivity extends AppCompatActivity {
                     ready();
                 }
             });
+
+            RetrofitClient.getInstance().getApi().getAnalyses(userId).enqueue(new Callback<AnalysisWrapper>() {
+                @Override
+                public void onResponse(Call<AnalysisWrapper> call, Response<AnalysisWrapper> response) {
+                    if (response.code() == 200 && response.body() != null && response.body().getEmbedded() != null) {
+                        DataUtils.getInstance().setAnalyses(response.body().getEmbedded().getAnalyses());
+                        allAnalyses = DataUtils.getInstance().getAnalyses().size();
+                        analysesLoaded = new AtomicInteger(0);
+
+                        if (allAnalyses == 0) {
+                            ready();
+                        }
+
+                        DataUtils.getInstance().getAnalyses().forEach(a ->
+                                RetrofitClient.getInstance().getApi().getDisease(a.getDiseaseURI().toString())
+                                        .enqueue(new Callback<Disease>() {
+                            @Override
+                            public void onResponse(Call<Disease> call, Response<Disease> response) {
+                                if (response.code() == 200 && response.body() != null) {
+                                    a.setDisease(response.body());
+                                }
+                                analysisLoaded();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Disease> call, Throwable t) {
+                                ViewUtils.showToast(AppViewActivity.this,
+                                        getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                                analysisLoaded();
+                            }
+                        }));
+                    } else {
+                        ready();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AnalysisWrapper> call, Throwable t) {
+                    ViewUtils.showToast(AppViewActivity.this,
+                            getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    ready();
+                }
+            });
         }
     }
 
     public void logout() {
         UserUtils.getInstance(this).destroySession();
         DataUtils.getInstance().setMeasurements(null);
+        DataUtils.getInstance().setAnalyses(null);
+        DataUtils.getInstance().setBodyData(null);
         BluetoothUtils.disconnect();
         BluetoothData.getInstance().clearData();
 

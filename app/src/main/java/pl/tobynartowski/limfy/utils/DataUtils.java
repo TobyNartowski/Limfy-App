@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import pl.tobynartowski.limfy.model.Analysis;
 import pl.tobynartowski.limfy.model.BodyData;
 import pl.tobynartowski.limfy.model.MeasurementAverage;
 
@@ -22,6 +23,7 @@ public class DataUtils {
 
     private List<MeasurementAverage> measurements;
     private BodyData bodyData;
+    private List<Analysis> analyses;
 
     public void setMeasurements(List<MeasurementAverage> measurements) {
         this.measurements = measurements;
@@ -32,14 +34,6 @@ public class DataUtils {
 
     public List<MeasurementAverage> getMeasurements() {
         return measurements;
-    }
-
-    public BodyData getBodyData() {
-        return bodyData;
-    }
-
-    public void setBodyData(BodyData bodyData) {
-        this.bodyData = bodyData;
     }
 
     public MeasurementAverage getTodayMeasurement() {
@@ -80,5 +74,21 @@ public class DataUtils {
                 .stream()
                 .filter(m -> m.getTimestamp().after(monday) && m.getTimestamp().before(nextMonday))
                 .collect(Collectors.toList());
+    }
+
+    public BodyData getBodyData() {
+        return bodyData;
+    }
+
+    public void setBodyData(BodyData bodyData) {
+        this.bodyData = bodyData;
+    }
+
+    public List<Analysis> getAnalyses() {
+        return analyses;
+    }
+
+    public void setAnalyses(List<Analysis> analyses) {
+        this.analyses = analyses;
     }
 }
