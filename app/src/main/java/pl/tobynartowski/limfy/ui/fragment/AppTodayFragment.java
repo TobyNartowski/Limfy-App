@@ -89,6 +89,11 @@ public class AppTodayFragment extends Fragment implements Observer {
                 if (activity != null) {
                     activity.onConnectionBroken();
                 }
+            } else if (bluetoothData.isFall()) {
+                AppViewActivity activity = (AppViewActivity) getActivity();
+                if (activity != null) {
+                    activity.startFallActivity();
+                }
             } else {
                 loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
             }

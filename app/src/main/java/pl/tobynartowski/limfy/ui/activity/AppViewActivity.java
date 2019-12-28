@@ -200,6 +200,16 @@ public class AppViewActivity extends AppCompatActivity {
             ViewUtils.showToast(this, getResources().getString(R.string.error_device_disconnected));
         });
     }
+
+    public synchronized void startFallActivity() {
+        if (BluetoothData.getInstance().isFall() && !FallActivity.isFallDetected()) {
+            FallActivity.setFallDetected(true);
+            BluetoothData.getInstance().setFall(false);
+            startActivity(new Intent(AppViewActivity.this, FallActivity.class));
+            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+        }
+    }
+
     @Override
     public void onBackPressed() {}
 }

@@ -97,4 +97,9 @@
     <string name="app_analysis_no_data_text">Przetwarzamy twoje dane, tutaj będą pojawiały się analizy twojego zdrowia.</string>
     <string name="app_analysis_you">Ty</string>
     <string name="app_analysis_you_description">Twój styl życia</string>
+
+    <string name="fall_text_main">Czy wszystko w porządku?</string>
+    <string name="fall_text_sub">Urządzenie wykryło upadek,\nw ciągu 30 sekund zostanie wysłanie powiadomienie ratunkowe!</string>
+    <string name="fall_button_call">Wezwij pomoc</string>
+    <string name="fall_button_ok">Wszystko w porządku, anuluj</string>
 </resources>

@@ -9,13 +9,14 @@ public class BluetoothData extends Observable implements Serializable {
 
     private static final long serialVersionUID = -2734520847664508134L;
 
-    public enum ChangeType {HEARTBEAT, STEPS, SHAKINESS, DISCONNECT, NONE}
+    public enum ChangeType {HEARTBEAT, STEPS, SHAKINESS, DISCONNECT, FALL, NONE}
 
     private int heartbeat;
     private int shakiness;
     private int steps;
-    private boolean disconnected;
     private int totalSteps = 0;
+    private boolean fall = false;
+    private boolean disconnected;
     private ChangeType changeType = ChangeType.NONE;
 
     private static BluetoothData instance;
@@ -68,6 +69,20 @@ public class BluetoothData extends Observable implements Serializable {
         notifyObservers();
     }
 
+    public synchronized boolean isFall() {
+        return fall;
+    }
+
+    public synchronized void setFall(boolean fall) {
+        this.fall = fall;
+        changeType = ChangeType.FALL;
+        notifyObservers();
+    }
+
+    public synchronized int getTotalSteps() {
+        return totalSteps;
+    }
+
     public synchronized boolean isDisconnected() {
         return disconnected;
     }
@@ -76,10 +91,6 @@ public class BluetoothData extends Observable implements Serializable {
         this.disconnected = disconnected;
         changeType = ChangeType.DISCONNECT;
         notifyObservers();
-    }
-
-    public synchronized int getTotalSteps() {
-        return totalSteps;
     }
 
     public synchronized ChangeType getChange() {

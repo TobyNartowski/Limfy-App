@@ -17,6 +17,7 @@ public class BluetoothUtils {
     private static final UUID CHARACTERISTIC_HEARTBEAT_UUID  = UUID.fromString("5168996b-625b-4d5d-ad14-fc30d0b91fcc");
     private static final UUID CHARACTERISTIC_STEPS_UUID  = UUID.fromString("72a590ba-09fe-4e88-a8d0-508d6c001b43");
     private static final UUID CHARACTERISTIC_SHAKINESS_UUID  = UUID.fromString("cc4616ac-b55a-4d4d-8cd4-034ba13dd56a");
+    private static final UUID CHARACTERISTIC_FALL_UUID = UUID.fromString("ec8357c6-6bde-4275-b03b-bbfa16cd2a47");
 
     private static Queue<BluetoothGattCharacteristic> characteristics = new LinkedList<>();
     private static BluetoothGatt bluetoothGatt;
@@ -59,6 +60,10 @@ public class BluetoothUtils {
                 BluetoothData.getInstance().setSteps(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
             } else if (characteristic.getUuid().equals(CHARACTERISTIC_SHAKINESS_UUID)) {
                 BluetoothData.getInstance().setShakiness(characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0));
+            } else if (characteristic.getUuid().equals(CHARACTERISTIC_FALL_UUID)) {
+                if (characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0) != 0) {
+                    BluetoothData.getInstance().setFall(true);
+                }
             }
         }
 
@@ -78,10 +83,6 @@ public class BluetoothUtils {
         BluetoothUtils.bluetoothGatt = bluetoothGatt;
     }
 
-    public static BluetoothGatt getBluetoothGatt() {
-        return BluetoothUtils.bluetoothGatt;
-    }
-
     public static BluetoothGattCallback getGattCallback() {
         return gattCallback;
     }
@@ -96,10 +97,5 @@ public class BluetoothUtils {
 
     public static boolean isConnected() {
         return connected;
-    }
-
-    // DEVELOPMENT
-    public static void setConnected(boolean status) {
-        connected = status;
     }
 }
