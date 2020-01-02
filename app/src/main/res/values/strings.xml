@@ -78,6 +78,7 @@
     <string name="app_settings_button_logout">Wyloguj</string>
     <string name="app_settings_button_cancel">Anuluj</string>
     <string name="app_settings_age_text">Dodaj datę urodzenia</string>
+    <string name="app_settings_number_text">Dodaj numer ratunkowy</string>
     <string name="app_settings_age_error">Niepoprawna data urodzenia!</string>
     <string name="app_settings_age_format">Data urodzenia: %1$d/%2$d/%3$d</string>
     <string name="app_settings_female">Kobieta</string>
@@ -99,7 +100,7 @@
     <string name="app_analysis_you_description">Twój styl życia</string>
 
     <string name="fall_text_main">Czy wszystko w porządku?</string>
-    <string name="fall_text_sub">Urządzenie wykryło upadek,\nw ciągu 30 sekund zostanie wysłanie powiadomienie ratunkowe!</string>
+    <string name="fall_text_sub">Urządzenie wykryło upadek,\nw ciągu 30 sekund zostanie wysłane powiadomienie do: %1$s!</string>
     <string name="fall_button_call">Wezwij pomoc</string>
     <string name="fall_button_ok">Wszystko w porządku, anuluj</string>
 </resources>

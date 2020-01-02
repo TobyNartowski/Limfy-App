@@ -55,6 +55,12 @@ public class RestUpdater extends Service implements Observer {
             if (!dataObject.isDisconnected()) {
                 switch (dataObject.getChange()) {
                     case HEARTBEAT:
+                        if (dataObject.getHeartbeat() < 40) {
+                            steps = new HashSet<>();
+                            shakiness = new HashSet<>();
+                            break;
+                        }
+
                         Call<Void> measurementCall = RetrofitClient.getInstance().getApi().postMeasurements(new Measurement(
                                 dataObject.getHeartbeat(),
                                 calculateSum(steps),

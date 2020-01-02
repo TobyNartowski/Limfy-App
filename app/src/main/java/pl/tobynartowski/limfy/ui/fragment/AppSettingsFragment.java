@@ -2,20 +2,23 @@ package pl.tobynartowski.limfy.ui.fragment;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Calendar;
 
@@ -23,6 +26,7 @@ import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.R;
 import pl.tobynartowski.limfy.api.RetrofitClient;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Contact;
 import pl.tobynartowski.limfy.model.Gender;
 import pl.tobynartowski.limfy.ui.activity.AppViewActivity;
 import pl.tobynartowski.limfy.ui.activity.RegisterDetailsActivity;
@@ -38,13 +42,15 @@ public class AppSettingsFragment extends Fragment {
     private static int userHeight;
     private static int userWeight;
     private static Gender gender;
+    private static String number;
 
     private NumberPicker heightPicker;
     private NumberPicker weightPicker;
     private RadioGroup radioGenderButton;
     private RadioButton maleButton, femaleButton;
     private Button changedButton;
-    private TextView dateText;
+    private Button dateButton;
+    private EditText numberInput;
 
     private Integer year;
     private boolean newUser = false;
@@ -72,7 +78,8 @@ public class AppSettingsFragment extends Fragment {
         weightPicker.setMinValue(30);
         weightPicker.setMaxValue(150);
 
-        dateText = view.findViewById(R.id.app_settings_age_text);
+        dateButton = view.findViewById(R.id.app_settings_age);
+        numberInput = view.findViewById(R.id.app_settings_number);
         Button logoutButton = view.findViewById(R.id.app_settings_button_logout);
 
         if (UserUtils.getInstance(Limfy.getContext()).getId() != null && DataUtils.getInstance().getBodyData() != null) {
@@ -80,6 +87,7 @@ public class AppSettingsFragment extends Fragment {
             userHeight = userData.getHeight();
             userWeight = userData.getWeight();
             gender = userData.getGender();
+            number = DataUtils.getInstance().getContact().getNumber();
             newUser = false;
 
             if (gender == Gender.MALE) {
@@ -90,6 +98,29 @@ public class AppSettingsFragment extends Fragment {
 
             heightPicker.setOnValueChangedListener((picker, oldVal, newVal) -> checkButtonState());
             weightPicker.setOnValueChangedListener((picker, oldVal, newVal) -> checkButtonState());
+
+            if (number != null) {
+                numberInput.setText(number);
+                numberInput.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, null));
+            }
+            numberInput.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.toString().length() >= 9) {
+                        numberInput.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, null));
+                    } else {
+                        numberInput.setError("Podaj prawidłowy numer");
+                        numberInput.setBackgroundTintList(getResources().getColorStateList(R.color.colorWhiteGray, null));
+                    }
+                    checkButtonState();
+                }
+            });
 
             changedButton.setOnClickListener(v -> {
                 BodyData bodyData = new BodyData(
@@ -115,6 +146,25 @@ public class AppSettingsFragment extends Fragment {
                                 getResources().getString(R.string.error_internal) + ": " + t.getMessage());
                     }
                 });
+
+                RetrofitClient.getInstance().getApi()
+                        .updateContact(UserUtils.getInstance(getContext()).getId(),
+                                new Contact(numberInput.getText().toString())).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.code() == 200) {
+                            setButtonState(changedButton, false);
+                            number = numberInput.getText().toString();
+                            DataUtils.getInstance().setContact(new Contact(number));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        ViewUtils.showToast(Limfy.getContext(),
+                                getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    }
+                });
             });
 
             logoutButton.setOnClickListener(v -> {
@@ -130,8 +180,8 @@ public class AppSettingsFragment extends Fragment {
             newUser = true;
 
             if (getContext() != null) {
-                dateText.setVisibility(View.VISIBLE);
-                dateText.setOnClickListener(v -> {
+                dateButton.setVisibility(View.VISIBLE);
+                dateButton.setOnClickListener(v -> {
                     Calendar calendar = Calendar.getInstance();
                     DatePickerDialog dialog = new DatePickerDialog(
                             getContext(),
@@ -140,8 +190,8 @@ public class AppSettingsFragment extends Fragment {
                                 if (year > 2015 || year < 1900) {
                                     ViewUtils.showToast(getContext(), getResources().getString(R.string.app_settings_age_error));
                                 } else {
-                                    dateText.setText(getResources().getString(R.string.app_settings_age_format, dayOfMonth, month, year));
-                                    dateText.setTextColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+                                    dateButton.setText(getResources().getString(R.string.app_settings_age_format, dayOfMonth, month, year));
+                                    dateButton.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, null));
                                     this.year = year;
                                     checkButtonState();
                                 }
@@ -151,6 +201,25 @@ public class AppSettingsFragment extends Fragment {
                             calendar.get(Calendar.DAY_OF_MONTH)
                     );
                     dialog.show();
+                });
+
+                numberInput.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        if (s.toString().length() >= 9) {
+                            numberInput.setBackgroundTintList(getResources().getColorStateList(R.color.colorAccent, null));
+                        } else {
+                            numberInput.setError("Podaj prawidłowy numer");
+                            numberInput.setBackgroundTintList(getResources().getColorStateList(R.color.colorWhiteGray, null));
+                        }
+                        checkButtonState();
+                    }
                 });
             }
 
@@ -183,7 +252,32 @@ public class AppSettingsFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.code() == 201) {
-                                activity.switchToLoginActivity();
+                                if (getActivity() != null && getActivity().getIntent() != null) {
+                                    String self = getActivity().getIntent().getStringExtra("self");
+                                    if (self == null) {
+                                        self = "";
+                                    }
+
+                                    RetrofitClient.getInstance().getApi().addContact(new Contact(
+                                            numberInput.getText().toString(),
+                                            URI.create(self))).enqueue(new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            if (response.code() == 201) {
+                                                activity.switchToLoginActivity();
+                                            } else {
+                                                activity.handleError();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            activity.handleError();
+                                        }
+                                    });
+                                } else {
+                                    activity.handleError();
+                                }
                             } else {
                                 activity.handleError();
                             }
@@ -212,6 +306,7 @@ public class AppSettingsFragment extends Fragment {
     public void onPause() {
         heightPicker.setValue(userHeight);
         weightPicker.setValue(userWeight);
+        numberInput.setText(DataUtils.getInstance().getContact().getNumber());
 
         if (gender == Gender.MALE) {
             maleButton.setChecked(true);
@@ -228,9 +323,10 @@ public class AppSettingsFragment extends Fragment {
     private void checkButtonState() {
         if (!newUser) {
             boolean sameGenderCheck = gender == Gender.MALE ? maleButton.isChecked() : femaleButton.isChecked();
-            setButtonState(changedButton, heightPicker.getValue() != userHeight || weightPicker.getValue() != userWeight || !sameGenderCheck);
+            setButtonState(changedButton, heightPicker.getValue() != userHeight || weightPicker.getValue() != userWeight
+                    || !sameGenderCheck || (numberInput.getText().toString().length() >= 9 && !numberInput.getText().toString().equals(number)));
         } else {
-            setButtonState(changedButton, radioGenderButton.getCheckedRadioButtonId() != -1 && year != null);
+            setButtonState(changedButton, radioGenderButton.getCheckedRadioButtonId() != -1 && year != null && numberInput.getText().length() >= 9);
         }
     }
 

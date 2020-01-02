@@ -35,7 +35,7 @@ public class AppTodayFragment extends Fragment implements Observer {
             activity.runOnUiThread(() -> {
                 ((TextView) view.findViewById(R.id.app_today_heartbeat_value)).setText(getResources().getString(R.string.app_today_value_heartbeat, heartbeat));
                 ((TextView) view.findViewById(R.id.app_today_steps_value)).setText(String.format(Locale.getDefault(), "%d", steps));
-                ((TextView) view.findViewById(R.id.app_today_distance_value)).setText(getResources().getString(R.string.app_today_value_distance, decimalFormat.format(0.792 * steps)));
+                ((TextView) view.findViewById(R.id.app_today_distance_value)).setText(getResources().getString(R.string.app_today_value_distance, decimalFormat.format(0.79 * steps)));
                 ((TextView) view.findViewById(R.id.app_today_calories_value)).setText(getResources().getString(R.string.app_today_value_calories, decimalFormat.format(steps / 20.0)));
             });
         }

@@ -55,20 +55,20 @@ public class AppAnalysisFragment extends Fragment {
 
                 if (analyses.get(0) != null && analyses.get(0).getPercentage() != 0) {
                     firstDiseaseValue.setText("o " + String.format(Locale.getDefault(), "%.2f%%",
-                            analyses.get(0).getPercentage()) + (analyses.get(0).getPercentage() > 0 ? " wyższe" : " niższe"));
+                            Math.abs(analyses.get(0).getPercentage())) + (analyses.get(0).getPercentage() > 0 ? " wyższe" : " niższe"));
                     firstDiseaseDescription.setText(analyses.get(0).getDisease().getName().toLowerCase());
                 }
 
                 if (analyses.get(1) != null && analyses.get(1).getPercentage() != 0) {
                     secondDiseaseValue.setText("o " + String.format(Locale.getDefault(), "%.2f%%",
-                            analyses.get(1).getPercentage()) + (analyses.get(1).getPercentage() > 0 ? " wyższe" : " niższe"));
+                            Math.abs(analyses.get(1).getPercentage())) + (analyses.get(1).getPercentage() > 0 ? " wyższe" : " niższe"));
                     secondDiseaseDescription.setText(analyses.get(1).getDisease().getName().toLowerCase());
                 }
 
                 if (analyses.get(2) != null && analyses.get(2).getPercentage() != 2) {
 
                     thirdDiseaseValue.setText("o " + String.format(Locale.getDefault(), "%.2f%%",
-                            analyses.get(2).getPercentage()) + (analyses.get(2).getPercentage() > 0 ? " wyższe" : " niższe"));
+                            Math.abs(analyses.get(2).getPercentage())) + (analyses.get(2).getPercentage() > 0 ? " wyższe" : " niższe"));
                     thirdDiseaseDescription.setText(analyses.get(2).getDisease().getName().toLowerCase());
                 }
 

@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import pl.tobynartowski.limfy.model.AnalysisWrapper;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Contact;
 import pl.tobynartowski.limfy.model.Disease;
 import pl.tobynartowski.limfy.model.Measurement;
 import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
@@ -49,6 +50,15 @@ public interface RestApi {
 
     @POST("api/v1/body-data")
     Call<Void> addBodyData(@Body BodyData bodyData);
+
+    @POST("api/v1/contacts")
+    Call<Void> addContact(@Body Contact contact);
+
+    @PATCH("api/v1/users/{id}/contact")
+    Call<Void> updateContact(@Path("id") String username, @Body Contact contact);
+
+    @GET("api/v1/users/{id}/contact")
+    Call<Contact> getContact(@Path("id") String username);
 
     @GET("api/v1/users/{id}/measurements/average")
     Call<MeasurementAverageWrapper> getMeasurements(@Path("id") String id);

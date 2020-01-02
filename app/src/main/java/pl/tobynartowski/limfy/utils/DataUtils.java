@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import pl.tobynartowski.limfy.model.Analysis;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Contact;
 import pl.tobynartowski.limfy.model.MeasurementAverage;
 
 public class DataUtils {
@@ -23,6 +24,7 @@ public class DataUtils {
 
     private List<MeasurementAverage> measurements;
     private BodyData bodyData;
+    private Contact contact;
     private List<Analysis> analyses;
 
     public void setMeasurements(List<MeasurementAverage> measurements) {
@@ -90,5 +92,13 @@ public class DataUtils {
 
     public void setAnalyses(List<Analysis> analyses) {
         this.analyses = analyses;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
     }
 }

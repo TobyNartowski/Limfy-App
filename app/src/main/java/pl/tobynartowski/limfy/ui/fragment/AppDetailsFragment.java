@@ -119,7 +119,7 @@ public class AppDetailsFragment extends Fragment {
                     }
                 }
 
-                if (thisWeekMeasurements == null) {
+                if (thisWeekMeasurements == null || thisWeekMeasurements.isEmpty()) {
                     thirdValue.setText("0%");
                     thirdValueDescription.setText(getResources().getString(R.string.app_details_no_data_week));
                     thirdValueIcon.setVisibility(View.INVISIBLE);
@@ -183,7 +183,7 @@ public class AppDetailsFragment extends Fragment {
                     }
                 }
 
-                if (thisWeekMeasurements == null) {
+                if (thisWeekMeasurements == null || thisWeekMeasurements.isEmpty()) {
                     thirdValue.setText("0%");
                     thirdValueDescription.setText(getResources().getString(R.string.app_details_no_data_week));
                     thirdValueIcon.setVisibility(View.INVISIBLE);

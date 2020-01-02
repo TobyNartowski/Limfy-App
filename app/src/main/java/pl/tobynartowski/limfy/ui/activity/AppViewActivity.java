@@ -3,6 +3,7 @@ package pl.tobynartowski.limfy.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,6 +19,7 @@ import pl.tobynartowski.limfy.api.RetrofitClient;
 import pl.tobynartowski.limfy.model.AnalysisWrapper;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.model.BodyData;
+import pl.tobynartowski.limfy.model.Contact;
 import pl.tobynartowski.limfy.model.Disease;
 import pl.tobynartowski.limfy.model.MeasurementAverageWrapper;
 import pl.tobynartowski.limfy.ui.ViewPageAdapter;
@@ -32,7 +34,7 @@ import retrofit2.Response;
 public class AppViewActivity extends AppCompatActivity {
 
     private AtomicInteger initialQueries = new AtomicInteger(0);
-    private static final int ALL_QUERIES = 3;
+    private static final int ALL_QUERIES = 4;
 
     private AtomicInteger analysesLoaded = new AtomicInteger(0);
     private int allAnalyses = 0;
@@ -62,6 +64,15 @@ public class AppViewActivity extends AppCompatActivity {
     }
 
     public void onLoaded() {
+        ConstraintLayout layout = findViewById(R.id.app_view_layout);
+        layout.removeView(findViewById(R.id.app_view_progress));
+
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        viewPager.setOffscreenPageLimit(10);
+        viewPager.setAdapter(new ViewPageAdapter(AppViewActivity.this));
+        viewPager.setCurrentItem(1, false);
+        viewPager.setVisibility(View.VISIBLE);
+
         ImageView connectIcon = findViewById(R.id.app_connect_icon);
         connectIcon.setVisibility(View.VISIBLE);
         if (BluetoothUtils.isConnected()) {
@@ -80,15 +91,6 @@ public class AppViewActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
             }
         });
-
-        ConstraintLayout layout = findViewById(R.id.app_view_layout);
-        layout.removeView(findViewById(R.id.app_view_progress));
-
-        ViewPager2 viewPager = findViewById(R.id.view_pager);
-        viewPager.setOffscreenPageLimit(10);
-        viewPager.setAdapter(new ViewPageAdapter(AppViewActivity.this));
-        viewPager.setCurrentItem(1, false);
-        viewPager.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -179,6 +181,23 @@ public class AppViewActivity extends AppCompatActivity {
                     ready();
                 }
             });
+
+            RetrofitClient.getInstance().getApi().getContact(userId).enqueue(new Callback<Contact>() {
+                @Override
+                public void onResponse(Call<Contact> call, Response<Contact> response) {
+                    if (response.code() == 200 && response.body() != null && response.body().getNumber() != null) {
+                        DataUtils.getInstance().setContact(response.body());
+                    }
+                    ready();
+                }
+
+                @Override
+                public void onFailure(Call<Contact> call, Throwable t) {
+                    ViewUtils.showToast(AppViewActivity.this,
+                            getResources().getString(R.string.error_internal) + ": " + t.getMessage());
+                    ready();
+                }
+            });
         }
     }
 
@@ -187,6 +206,7 @@ public class AppViewActivity extends AppCompatActivity {
         DataUtils.getInstance().setMeasurements(null);
         DataUtils.getInstance().setAnalyses(null);
         DataUtils.getInstance().setBodyData(null);
+        DataUtils.getInstance().setContact(null);
         BluetoothUtils.disconnect();
         BluetoothData.getInstance().clearData();
 
