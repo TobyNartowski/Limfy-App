@@ -7,6 +7,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashSet;
 import java.util.Observable;
 import java.util.Observer;
@@ -15,6 +17,7 @@ import java.util.Set;
 import pl.tobynartowski.limfy.Limfy;
 import pl.tobynartowski.limfy.model.BluetoothData;
 import pl.tobynartowski.limfy.model.Measurement;
+import pl.tobynartowski.limfy.utils.DataUtils;
 import pl.tobynartowski.limfy.utils.UserUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,20 +64,24 @@ public class RestUpdater extends Service implements Observer {
                             break;
                         }
 
-                        Call<Void> measurementCall = RetrofitClient.getInstance().getApi().postMeasurements(new Measurement(
+                        Call<JsonObject> measurementCall = RetrofitClient.getInstance().getApi().postMeasurements(new Measurement(
                                 dataObject.getHeartbeat(),
                                 calculateSum(steps),
                                 calculateAverage(shakiness),
                                 RetrofitClient.API_URL + "api/v1/users/" + UserUtils.getInstance(Limfy.getContext()).getId()
                         ));
-                        measurementCall.enqueue(new Callback<Void>() {
+                        measurementCall.enqueue(new Callback<JsonObject>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                if (response.code() == 201 && response.body() != null) {
+                                    BluetoothData.getInstance().setTotalHeartbeat(response.body().get("heartbeat").getAsDouble());
+
+                                }
                                 Log.i(getClass().getName(), "Measurements has been sent: " + response.code());
                             }
 
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
                                 Log.e(getClass().getName(), "Cannot send measurements", t);
                             }
                         });

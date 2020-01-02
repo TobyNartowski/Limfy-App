@@ -58,7 +58,7 @@
     <string name="app_today_distance_description">twoja droga</string>
     <string name="app_today_calories_description">spalonych</string>
 
-    <string name="app_today_value_heartbeat">%1$d bpm</string>
+    <string name="app_today_value_heartbeat">%1$s bpm</string>
     <string name="app_today_value_distance">%1$s m</string>
     <string name="app_today_value_calories">%1$s cal</string>
 

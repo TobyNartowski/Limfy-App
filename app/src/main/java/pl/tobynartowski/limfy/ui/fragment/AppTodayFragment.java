@@ -27,13 +27,13 @@ public class AppTodayFragment extends Fragment implements Observer {
 
     private boolean heartShow = false;
 
-    private void loadData(int heartbeat, int steps) {
-        DecimalFormat decimalFormat = new DecimalFormat("0.00##");
+    private void loadData(double heartbeat, int steps) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
         Activity activity = getActivity();
         View view = getView();
         if (activity != null && view != null) {
             activity.runOnUiThread(() -> {
-                ((TextView) view.findViewById(R.id.app_today_heartbeat_value)).setText(getResources().getString(R.string.app_today_value_heartbeat, heartbeat));
+                ((TextView) view.findViewById(R.id.app_today_heartbeat_value)).setText(getResources().getString(R.string.app_today_value_heartbeat, decimalFormat.format(heartbeat)));
                 ((TextView) view.findViewById(R.id.app_today_steps_value)).setText(String.format(Locale.getDefault(), "%d", steps));
                 ((TextView) view.findViewById(R.id.app_today_distance_value)).setText(getResources().getString(R.string.app_today_value_distance, decimalFormat.format(0.79 * steps)));
                 ((TextView) view.findViewById(R.id.app_today_calories_value)).setText(getResources().getString(R.string.app_today_value_calories, decimalFormat.format(steps / 20.0)));
@@ -95,7 +95,7 @@ public class AppTodayFragment extends Fragment implements Observer {
                     activity.startFallActivity();
                 }
             } else {
-                loadData(bluetoothData.getHeartbeat(), BluetoothData.getInstance().getTotalSteps());
+                loadData(bluetoothData.getTotalHeartbeat(), BluetoothData.getInstance().getTotalSteps());
             }
         }
     }

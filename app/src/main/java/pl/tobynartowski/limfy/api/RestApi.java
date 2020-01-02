@@ -43,7 +43,7 @@ public interface RestApi {
     Call<JsonObject> getUserId(@Path("username") String username);
 
     @POST("api/v1/measurements")
-    Call<Void> postMeasurements(@Body Measurement measurement);
+    Call<JsonObject> postMeasurements(@Body Measurement measurement);
 
     @DELETE("api/v1/users/{username}")
     Call<Void> deleteEmptyUser(@Path("username") String username);
