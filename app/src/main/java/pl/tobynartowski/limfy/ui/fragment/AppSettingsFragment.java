@@ -306,7 +306,7 @@ public class AppSettingsFragment extends Fragment {
     public void onPause() {
         heightPicker.setValue(userHeight);
         weightPicker.setValue(userWeight);
-        numberInput.setText(DataUtils.getInstance().getContact().getNumber());
+        numberInput.setText(number);
 
         if (gender == Gender.MALE) {
             maleButton.setChecked(true);

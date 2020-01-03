@@ -68,9 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    ViewUtils.showToast(LoginActivity.this,
-                            getResources().getString(R.string.error_connection) + ": " + t.getMessage());
-                    new Handler().postDelayed(LoginActivity.this::switchToAppActivity, 500);
+                    ViewUtils.showToast(LoginActivity.this, "Błąd połączenia z serwerem, uruchom aplikacje ponownie");
                     RetrofitClient.getInstance().addToken(UserUtils.getInstance(LoginActivity.this).getBearer());
                     autoLogin = true;
                 }
